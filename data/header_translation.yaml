@@ -1,0 +1,15 @@
+Wybrany dnia: election_date
+Wybrana dnia: election_date
+Lista: list
+Okręg wyborczy: constituency
+Liczba głosów: votes_count
+Ślubowanie: oath_date
+Staż parlamentarny: seniority
+Klub/koło: party_full
+Wykształcenie: education
+Ukończona szkoła: finished_school
+Zawód: occupation
+Funkcja w klubie/kole: party_function
+Tytuł/stopień naukowy: academic_degree
+Funkcja w Sejmie: sejm_function
+Wygaśnięcie mandatu: mandate_expiry_date
