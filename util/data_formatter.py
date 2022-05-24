@@ -1,5 +1,7 @@
 import pandas as pd
 
+from translation_service import TranslationService
+
 DATA_FOLDER_PATH = "..\\data"
 
 
@@ -32,6 +34,15 @@ def save_repr_pickle(repr_df: pd.DataFrame) -> None:
     repr_df.to_pickle(DATA_FOLDER_PATH + "\\repr_compressed.pickle")
 
 
+def translate_columns(repr_df: pd.DataFrame) -> None:
+    columns_for_translation = {"occupation", "education", "additional_info", "party_function", "academic_degree", "sejm_function"}
+    translator = TranslationService()
+    for column in columns_for_translation:
+        print(f"Translating column {column}...")
+        repr_df[column] = repr_df[column].apply(lambda text: translator.translate(text, "pl", "en"))
+    translator.export_words_dict(overwrite=False)
+
+
 def main():
     repr_df = get_merged_repr_dataframe()
     cols = repr_df.columns.to_list()
@@ -41,6 +52,7 @@ def main():
     repr_df = repr_df[repr_df.mandate_expiry_date.isnull()]
     repr_df.seniority = repr_df.seniority.apply(seniority_as_cadencies_count)
     repr_df.drop("mandate_expiry_date", axis=1, inplace=True)
+    translate_columns(repr_df)
     save_repr_pickle(repr_df)
 
 
