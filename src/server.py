@@ -29,7 +29,7 @@ class Server:
                         )
                     ],
                     className="sejm-plot-section"
-                ),
+                )
             ]
         )
 

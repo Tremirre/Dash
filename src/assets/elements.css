@@ -1,7 +1,7 @@
 .sejm-plot-section {
     display: flex;
     width: 100%;
-    outline-color: #000;
+    outline-color: rgb(0, 0, 0);
     outline-style: solid;
     outline-width: 4px;
 }
