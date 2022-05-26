@@ -1,10 +1,11 @@
-import dash_html_components as html
-import dash_core_components as dcc
+import json
 
-from dash import Dash
+from dash import Dash, html, dcc
 from dash.dependencies import Input, Output
 
+
 app = Dash(__name__)
+
 
 @app.callback(
         Output(component_id="test_output", component_property="children"),
@@ -12,3 +13,11 @@ app = Dash(__name__)
     )
 def update_test_output(value):
     return f"Out: {value}" 
+
+
+@app.callback(
+    Output('debug-output', 'children'),
+    Input('sejm-plot', 'hoverData')
+)
+def test_click_data(hoverData):
+    return json.dumps(hoverData, indent=2)

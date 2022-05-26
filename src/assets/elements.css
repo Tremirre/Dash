@@ -1,0 +1,13 @@
+.sejm-plot-section {
+    display: flex;
+    width: 100%;
+    outline-color: #000;
+    outline-style: solid;
+    outline-width: 4px;
+}
+
+.side-bar {
+    background-color: rgb(172, 172, 172);
+    padding: 20px;
+    text-align: justify;
+}
