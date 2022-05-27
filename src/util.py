@@ -31,3 +31,30 @@ def generate_sejm_plot_rings(arc_length=0.45, r_0=1.6, dr=0.8, num_points=460):
     )
     X, Y, _ = list(zip(*sorted_by_angle))
     return X, Y
+
+
+def sum_repr_funds(repr) -> float:
+    cash_pl = repr.cash_polish_currency
+    cash_fg = repr.cash_foreign_currency
+    securities = repr.securites_value
+    house_value = repr.house_value
+    flat_value = repr.flat_value
+    farm_estate_value = repr.farm_estate_value
+    other_estates_value = repr.other_estates_value
+    other_shares_value = repr.other_shares_value
+    if type(house_value) is list:
+        house_value = sum(house_value)
+    if type(flat_value) is list:
+        flat_value = sum(flat_value)
+    return sum(
+        [
+            cash_pl,
+            cash_fg,
+            securities,
+            house_value,
+            flat_value,
+            farm_estate_value,
+            other_estates_value,
+            other_shares_value,
+        ]
+    )

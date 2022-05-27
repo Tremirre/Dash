@@ -4,7 +4,7 @@ import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
 
-from dash import dcc
+from dash import dcc, html
 
 from util import generate_sejm_plot_rings
 from data import REPR_DF
@@ -36,8 +36,8 @@ def get_main_sejm_plot():
 
     fig.update_layout(
         hoverlabel=dict(bgcolor="white", font_size=12, font_family="Rockwell"),
-        xaxis=dict(showgrid=False, visible=False, zeroline=False),
-        yaxis=dict(showgrid=False, visible=False, zeroline=False),
+        xaxis=dict(showgrid=False, visible=False, zeroline=False, fixedrange=True),
+        yaxis=dict(showgrid=False, visible=False, zeroline=False, fixedrange=True),
         title=dict(
             text="<b>Polish Sejm Split</b>",
             x=0.27,
@@ -48,7 +48,24 @@ def get_main_sejm_plot():
         paper_bgcolor="rgb(255,220,220)",
         plot_bgcolor="white",
     )
-    return dcc.Graph(id="sejm-plot", figure=fig)
+    return dcc.Graph(id="sejm-plot", config={"displayModeBar": False}, figure=fig)
+
+
+def get_repr_data_section():
+    return html.Div(
+        children=[
+            html.H2(id="repr-name"),
+            html.P(id="repr-data")
+        ],
+        className="side-bar",
+    )
+
+
+def get_sejm_plot_section():
+    return html.Div(
+        children=[get_main_sejm_plot(), get_repr_data_section()],
+        className="sejm-plot-section",
+    )
 
 
 def get_scatter_matrix(dims):

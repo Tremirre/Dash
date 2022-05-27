@@ -11,28 +11,12 @@ class Server:
     def setup_layout(self):
         self.app.layout = html.Div(
             children=[
-                html.H1(children=["TESTING DASH APP"]),
-                dcc.Input(id="test_input", value="", type="text"),
-                html.Br(),
-                html.Div(id="test_output"),
-                html.Br(),
                 html.Div(
-                    children=[
-                        elements.get_main_sejm_plot(),
-                        html.Div(
-                            children=[
-                                html.H1("CONTAINED"),
-                                html.Br(),
-                                html.H3(
-                                    "Some dumb text as a placeholder to this beatutiful beautiful dashboard that greatly rerpesents my programming skills and sense of beauty."
-                                ),
-                                html.Pre(id="debug-output"),
-                            ],
-                            className="side-bar",
-                        ),
-                    ],
-                    className="sejm-plot-section",
+                    children=[html.H1("REPRESENTATIVES OF THE IX-th SEJM CADENCY")],
+                    className="title-section",
                 ),
+                html.Br(),
+                elements.get_sejm_plot_section(),
                 html.Br(),
                 html.Div(
                     children=[
