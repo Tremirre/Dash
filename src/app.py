@@ -1,10 +1,9 @@
-from fcntl import F_DUPFD
 import json
 
 from dash import Dash, html, dcc
 from dash.dependencies import Input, Output
 
-from src.elements import get_scatter_matrix
+from elements import get_scatter_matrix
 
 app = Dash(__name__)
 
