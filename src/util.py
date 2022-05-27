@@ -1,11 +1,13 @@
 import numpy as np
 
 
-def get_circle_points(radius: float, arc_length: float, max_points: int) -> tuple[list[float], list[float]]:
+def get_circle_points(
+    radius: float, arc_length: float, max_points: int
+) -> tuple[list[float], list[float]]:
     X = []
     Y = []
     cur_angle = 0
-    angle_change = arc_length/radius
+    angle_change = arc_length / radius
     expected = int(np.pi / angle_change)
     unused = np.fmod(np.pi, angle_change)
     angle_change += unused / expected
@@ -16,7 +18,7 @@ def get_circle_points(radius: float, arc_length: float, max_points: int) -> tupl
     return X, Y
 
 
-def generate_sejm_plot_rings(arc_length = 0.45, r_0 = 1.6, dr = 0.8, num_points = 460):
+def generate_sejm_plot_rings(arc_length=0.45, r_0=1.6, dr=0.8, num_points=460):
     X = []
     Y = []
     while num_points - len(X) > 0:
@@ -24,6 +26,8 @@ def generate_sejm_plot_rings(arc_length = 0.45, r_0 = 1.6, dr = 0.8, num_points 
         X.extend(x)
         Y.extend(y)
         r_0 += dr
-    sorted_by_angle = sorted([(x, y, np.arctan2(y, x)) for x, y in zip(X, Y)], key=lambda x: x[2])
+    sorted_by_angle = sorted(
+        [(x, y, np.arctan2(y, x)) for x, y in zip(X, Y)], key=lambda x: x[2]
+    )
     X, Y, _ = list(zip(*sorted_by_angle))
     return X, Y

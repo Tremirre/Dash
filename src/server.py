@@ -2,6 +2,7 @@ import elements
 
 from dash import Dash, html, dcc
 
+
 class Server:
     def __init__(self, app: Dash):
         self.app = app
@@ -22,16 +23,19 @@ class Server:
                             children=[
                                 html.H1("CONTAINED"),
                                 html.Br(),
-                                html.H3("Some dumb text as a placeholder to this beatutiful beautiful dashboard that greatly rerpesents my programming skills and sense of beauty."),
-                                html.Pre(id="debug-output")
+                                html.H3(
+                                    "Some dumb text as a placeholder to this beatutiful beautiful dashboard that greatly rerpesents my programming skills and sense of beauty."
+                                ),
+                                html.Pre(id="debug-output"),
                             ],
-                            className="side-bar"
-                        )
+                            className="side-bar",
+                        ),
                     ],
-                    className="sejm-plot-section"
+                    className="sejm-plot-section",
                 ),
                 html.Br(),
-                html.Div(children=[
+                html.Div(
+                    children=[
                         html.Div(
                             children=[
                                 html.H1("Political Parties"),
@@ -48,28 +52,38 @@ class Server:
                                 html.Img(src="\\assets\\Logo_PSL.png", alt="KP"),
                                 html.Br(),
                                 html.H2("Konfederacja"),
-                                html.Img(src="\\assets\\Logo_Konfederacja.png", alt="Konfederacja"),
+                                html.Img(
+                                    src="\\assets\\Logo_Konfederacja.png",
+                                    alt="Konfederacja",
+                                ),
                                 html.Br(),
                                 html.H2("Polska2050"),
-                                html.Img(src="\\assets\\Logo_2050.png", alt="2050")
-
+                                html.Img(src="\\assets\\Logo_2050.png", alt="2050"),
                             ],
-                            className="logo"
+                            className="logo",
                         )
                     ],
-                    className="partie"
+                    className="partie",
                 ),
                 html.Br(),
-                html.Div([
-                    html.H4('Analysis of hajsik data using scatter matrix'),
-                    dcc.Dropdown(
-                        id="dropdown",
-                        options=['cash_polish_currency', 'cash_foreign_currency', 'paper_value','property_value', 'vehicles_count'],
-                        value=['cash_polish_currency', 'cash_foreign_currency'],
-                        multi=True
-                    ),
-                    dcc.Graph(id="scatter_matrix"),
-                ])
+                html.Div(
+                    [
+                        html.H4("Analysis of hajsik data using scatter matrix"),
+                        dcc.Dropdown(
+                            id="dropdown",
+                            options=[
+                                "cash_polish_currency",
+                                "cash_foreign_currency",
+                                "paper_value",
+                                "property_value",
+                                "vehicles_count",
+                            ],
+                            value=["cash_polish_currency", "cash_foreign_currency"],
+                            multi=True,
+                        ),
+                        dcc.Graph(id="scatter_matrix"),
+                    ]
+                ),
             ]
         )
 

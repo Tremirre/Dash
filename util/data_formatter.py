@@ -27,7 +27,7 @@ def split_estates_data(repr_df: pd.DataFrame) -> None:
 def seniority_as_cadencies_count(candency: str) -> int:
     if candency == "brak":
         return 0
-    return len(candency.split(','))
+    return len(candency.split(","))
 
 
 def save_repr_pickle(repr_df: pd.DataFrame) -> None:
@@ -35,11 +35,20 @@ def save_repr_pickle(repr_df: pd.DataFrame) -> None:
 
 
 def translate_columns(repr_df: pd.DataFrame) -> None:
-    columns_for_translation = {"occupation", "education", "additional_info", "party_function", "academic_degree", "sejm_function"}
+    columns_for_translation = {
+        "occupation",
+        "education",
+        "additional_info",
+        "party_function",
+        "academic_degree",
+        "sejm_function",
+    }
     translator = TranslationService()
     for column in columns_for_translation:
         print(f"Translating column {column}...")
-        repr_df[column] = repr_df[column].apply(lambda text: translator.translate(text, "pl", "en"))
+        repr_df[column] = repr_df[column].apply(
+            lambda text: translator.translate(text, "pl", "en")
+        )
     translator.export_words_dict(overwrite=False)
 
 
@@ -56,5 +65,5 @@ def main():
     save_repr_pickle(repr_df)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
