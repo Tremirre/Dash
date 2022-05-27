@@ -70,3 +70,20 @@ def get_main_sejm_plot():
         id="sejm-plot",
         figure=fig
     )
+
+def get_scatter_matrix(dims):
+    df = REPR_DF.copy()  # replace with your own data source
+    df["paper_value"] = df['securites_value'] + df['other_shares_value']
+    df["property_value"] = df['house_value']
+    fig = px.scatter_matrix(
+        df, dimensions=dims, color="party_short",
+        labels={col:col.replace('_', ' ') for col in df.columns},
+        custom_data = ["name", "date_of_birth", "education", 'cash_polish_currency', 'cash_foreign_currency'])
+    fig.update_traces(diagonal_visible=True)
+    fig.update_traces(
+        marker={"size": 8},
+        hovertemplate="Name: %{customdata[0]}<br>Date of birth: %{customdata[1]}<br>Education: %{customdata[2]}"
+    )
+    fig.add_trace(go.Splom(showupperhalf = False))
+
+    return fig
