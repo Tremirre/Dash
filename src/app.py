@@ -25,11 +25,11 @@ def test_click_data(repr_data):
     Political party: {party_full}\n
     Constituency city: {constituency_city}\n
     Votes count: {votes_count}\n
-    Experiance as a representative: {seniority} cadencies\n
+    Experience: {seniority} cadencies\n
     City of birth: {city_of_birth}\n
     Date of birth: {date_of_birth}\n
-    Total funds and estates value: {total:.2f} PLN\n
-    Total loans value: {loans_value:.2f} PLN
+    Total funds and estates value: {total:,.2f} PLN\n
+    Total loans value: {loans_value:,.2f} PLN
     """.format(
         **clicked_entry._asdict(), total=sum_repr_funds(clicked_entry)
     )
