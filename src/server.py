@@ -17,6 +17,7 @@ class Server:
                 ),
                 html.Br(),
                 elements.get_sejm_plot_section(),
+                elements.get_repr_vis_section(),
                 html.Br(),
                 html.Div(
                     children=[
@@ -24,13 +25,17 @@ class Server:
                             children=[
                                 html.H1("Political Parties"),
                                 html.H2("Prawo i Sprawiedliwość"),
-                                html.Img(src="assets/logos/Logo_PiS.svg.png", alt="PiS"),
+                                html.Img(
+                                    src="assets/logos/Logo_PiS.svg.png", alt="PiS"
+                                ),
                                 html.Br(),
                                 html.H2("Koalicja Obywatelska"),
                                 html.Img(src="assets/logos/Logo_KO.png", alt="KO"),
                                 html.Br(),
                                 html.H2("Lewica"),
-                                html.Img(src="assets/logos/Logo_Lewica.png", alt="Lewica"),
+                                html.Img(
+                                    src="assets/logos/Logo_Lewica.png", alt="Lewica"
+                                ),
                                 html.Br(),
                                 html.H2("Koalicja Polska"),
                                 html.Img(src="assets/logos/Logo_PSL.png", alt="KP"),

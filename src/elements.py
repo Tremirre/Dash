@@ -1,4 +1,5 @@
 import pandas as pd
+from regex import D
 import numpy as np
 
 import plotly.graph_objects as go
@@ -40,23 +41,20 @@ def get_main_sejm_plot():
         yaxis=dict(showgrid=False, visible=False, zeroline=False, fixedrange=True),
         title=dict(
             text="<b>Polish Sejm Split</b>",
-            x=0.27,
+            x=0.42,
             y=0.95,
-            font=dict(family="Helvetica", size=36),
+            font=dict(family="Montserrat-Thin", size=30),
         ),
         margin=dict(l=20, b=20, r=20, t=80),
-        paper_bgcolor="rgb(255,220,220)",
-        plot_bgcolor="white",
+        paper_bgcolor="rgb(240, 240, 240)",
+        plot_bgcolor="rgb(240, 240, 240)",
     )
     return dcc.Graph(id="sejm-plot", config={"displayModeBar": False}, figure=fig)
 
 
 def get_repr_data_section():
     return html.Div(
-        children=[
-            html.H2(id="repr-name"),
-            html.P(id="repr-data")
-        ],
+        children=[html.H2(id="repr-name"), html.P(id="repr-data")],
         className="side-bar",
     )
 
@@ -65,6 +63,33 @@ def get_sejm_plot_section():
     return html.Div(
         children=[get_main_sejm_plot(), get_repr_data_section()],
         className="sejm-plot-section",
+    )
+
+
+def get_icon_entry(text: str, element_id: str) -> html.Div:
+    return html.Div(
+        children=[
+            html.H2(text),
+            html.Div(children=[], className="icon-array", id=element_id),
+        ],
+        className="icon-entry",
+    )
+
+
+def get_repr_vis_section():
+    return html.Div(
+        children=[
+            html.Div(
+                children=[
+                    get_icon_entry("Houses:", "house-array"),
+                    get_icon_entry("Flats:", "flat-array"),
+                    get_icon_entry("Vehicles:", "car-array"),
+                    get_icon_entry("Farm:", "farm-array"),
+                    get_icon_entry("Experience:", "experience-array"),
+                ]
+            ),
+        ],
+        className="repr-vis-section",
     )
 
 

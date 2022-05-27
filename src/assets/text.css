@@ -1,8 +1,18 @@
 @font-face {
-    font-family: "Montserrat";
+    font-family: "Montserrat-Thin";
     src: url(/assets/fonts/Montserrat-Thin.ttf) format("truetype");
 }
 
+@font-face {
+    font-family: "Montserrat-SemiBold";
+    src: url(/assets/fonts/Montserrat-SemiBold.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "Montserrat-Bold";
+    src: url(/assets/fonts/Montserrat-Bold.ttf) format("truetype");
+}
+
 * body {
-    font-family: "Montserrat", sans-serif;
+    font-family: "Montserrat-Thin", sans-serif;
 }

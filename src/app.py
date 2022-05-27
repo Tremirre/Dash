@@ -10,7 +10,15 @@ app = Dash(__name__)
 
 
 @app.callback(
-    [Output("repr-name", "children"), Output("repr-data", "children")],
+    [
+        Output("repr-name", "children"),
+        Output("repr-data", "children"),
+        Output("car-array", "children"),
+        Output("house-array", "children"),
+        Output("flat-array", "children"),
+        Output("farm-array", "children"),
+        Output("experience-array", "children"),
+    ],
     Input("sejm-plot", "clickData"),
     prevent_initial_callback=True,
 )
@@ -25,7 +33,6 @@ def test_click_data(repr_data):
     Political party: {party_full}\n
     Constituency city: {constituency_city}\n
     Votes count: {votes_count}\n
-    Experience: {seniority} cadencies\n
     City of birth: {city_of_birth}\n
     Date of birth: {date_of_birth}\n
     Total funds and estates value: {total:,.2f} PLN\n
@@ -35,7 +42,51 @@ def test_click_data(repr_data):
     )
     repr_data_format = repr_data_format.split("\n")
     repr_data_format = [html.P(verse) for verse in repr_data_format]
-    return name, repr_data_format
+
+    num_cars = int(clicked_entry.vehicles_count)
+    num_farms = 1 if clicked_entry.farm_estate_size else 0
+    num_houses = 0
+    if not clicked_entry.house_size:
+        if type(clicked_entry.house_size) is list:
+            num_houses = len(clicked_entry.house_size)
+        else:
+            num_houses = 1
+    num_flats = 0
+    if not clicked_entry.flat_size:
+        if type(clicked_entry.flat_size) is list:
+            num_flats = len(clicked_entry.flat_size)
+        else:
+            num_flats = 1
+    exp = clicked_entry.seniority
+
+    car_icons = [
+        html.Img(src="/assets/icons/car.svg", className="icon") for _ in range(num_cars)
+    ]
+    house_icons = [
+        html.Img(src="/assets/icons/house.svg", className="icon")
+        for _ in range(num_houses)
+    ]
+    flat_icons = [
+        html.Img(src="/assets/icons/flat.svg", className="icon")
+        for _ in range(num_flats)
+    ]
+    farm_icons = [
+        html.Img(src="/assets/icons/farm.svg", className="icon")
+        for _ in range(num_farms)
+    ]
+    exp_icons = [
+        html.Img(src="/assets/icons/star.svg", className="icon") for _ in range(exp)
+    ]
+
+    return (
+        name,
+        repr_data_format,
+        car_icons,
+        house_icons,
+        flat_icons,
+        farm_icons,
+        exp_icons,
+    )
 
 
 @app.callback(Output("scatter_matrix", "figure"), Input("dropdown", "value"))
