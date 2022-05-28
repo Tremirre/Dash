@@ -1,5 +1,4 @@
 import pandas as pd
-from regex import D
 import numpy as np
 
 import plotly.graph_objects as go
@@ -25,14 +24,14 @@ def get_main_sejm_plot():
         x="seat_x",
         y="seat_y",
         color="party_short",
-        custom_data=["name", "date_of_birth", "education"],
+        custom_data=["name", "sejm_function", "academic_degree"],
         labels={"party_short": "Political Party"},
-        width=1000,
-        height=500,
+        width=900,
+        height=450,
     )
     fig.update_traces(
         marker={"size": 15},
-        hovertemplate="Name: %{customdata[0]}<br>Date of birth: %{customdata[1]}<br>Education: %{customdata[2]}",
+        hovertemplate="Name: %{customdata[0]}<br>Sejm function: %{customdata[1]}<br>Degree: %{customdata[2]}",
     )
 
     fig.update_layout(
@@ -49,7 +48,11 @@ def get_main_sejm_plot():
         paper_bgcolor="rgb(240, 240, 240)",
         plot_bgcolor="rgb(240, 240, 240)",
     )
-    return dcc.Graph(id="sejm-plot", config={"displayModeBar": False}, figure=fig)
+    return dcc.Graph(
+        id="sejm-plot",
+        config={"displayModeBar": False, "autosizable": True, "responsive": True},
+        figure=fig,
+    )
 
 
 def get_repr_data_section():
@@ -60,8 +63,11 @@ def get_repr_data_section():
 
 
 def get_sejm_plot_section():
-    return html.Div(
-        children=[get_main_sejm_plot(), get_repr_data_section()],
+    return html.Span(
+        children=[
+            html.Div(children=[get_main_sejm_plot()], className="sejm-plot-div"),
+            get_repr_data_section(),
+        ],
         className="sejm-plot-section",
     )
 
@@ -79,14 +85,17 @@ def get_icon_entry(text: str, element_id: str) -> html.Div:
 def get_repr_vis_section():
     return html.Div(
         children=[
+            html.Div(children=[], id="repr-other", className="repr-other"),
+            dcc.Graph(id="repr-funds-breakup", config={"displayModeBar": False}),
             html.Div(
                 children=[
                     get_icon_entry("Houses:", "house-array"),
                     get_icon_entry("Flats:", "flat-array"),
                     get_icon_entry("Vehicles:", "car-array"),
-                    get_icon_entry("Farm:", "farm-array"),
+                    get_icon_entry("Farms:", "farm-array"),
                     get_icon_entry("Experience:", "experience-array"),
-                ]
+                ],
+                className="repr-stats-panel",
             ),
         ],
         className="repr-vis-section",

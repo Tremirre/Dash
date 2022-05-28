@@ -6,34 +6,72 @@
 }
 
 .sejm-plot-section {
-    display: flex;
     width: 100%;
-    outline-color: rgb(0, 0, 0);
-    outline-style: solid;
-    outline-width: 4px;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 67% 33%;
+    height: 500px;
+}
+
+.sejm-plot-div {
+    width: auto;
+    display: flex;
+    justify-content: center;
+    background-color: rgb(240, 240, 240);
 }
 
 .side-bar {
     background-color: rgb(0, 0, 0);
     padding: 20px;
-    width: 100%;
     font-size: 15px;
-    color: rgb(255, 255, 255);
+    color: white;
 }
 
 .repr-vis-section {
-    display: flex;
     width: 100%;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 33% 34% 33%;
+    background-color: black;
+    color: white;
+    height: 400px;
+}
+
+.repr-stats-panel {
+    padding: 16px;
+    background-clip: border-box;
+    font-size: 16px;
 }
 
 .icon-entry {
-    display: flex;
+    display: grid;
     grid-auto-flow: column;
+    grid-template-columns: 120px auto;
     grid-column-gap: 20px;
-    height: 80px;
+    height: 60px;
+    width: 100%;
+    vertical-align: middle;
 }
 
 .icon {
-    width: 80px;
+    width: 50px;
     height: 80px;
+    animation: show_up 2s linear;
+}
+
+.star-icon {
+    width: 40px;
+    height: 80px;
+}
+
+@keyframes show-up {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }

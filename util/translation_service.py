@@ -3,9 +3,11 @@ import os
 import yaml
 import googletrans as gt
 
+from pathlib import Path
+
 
 class TranslationService:
-    WORD_DICT_FILE = "wd.yaml"
+    WORD_DICT_FILE = f"{Path(__file__).absolute().parent}\\wd.yaml"
 
     def __init__(self):
         self.translator = gt.Translator()
@@ -13,6 +15,7 @@ class TranslationService:
 
     def get_words_dict(self) -> dict:
         if not os.path.isfile(TranslationService.WORD_DICT_FILE):
+            print("Word Dictionary not found!")
             return {}
         with open(TranslationService.WORD_DICT_FILE, "r", encoding="utf-8") as f:
             return yaml.safe_load(f)

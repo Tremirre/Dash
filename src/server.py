@@ -73,6 +73,7 @@ class Server:
                         dcc.Graph(id="scatter_matrix"),
                     ]
                 ),
+                html.P(id="placeholder"),
             ]
         )
 

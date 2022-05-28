@@ -1,8 +1,10 @@
 import pandas as pd
 
+from pathlib import Path
+
 from translation_service import TranslationService
 
-DATA_FOLDER_PATH = "..\\data"
+DATA_FOLDER_PATH = f"{Path(__file__).absolute().parent.parent}\\data"
 
 
 def get_merged_repr_dataframe() -> pd.DataFrame:
@@ -61,6 +63,9 @@ def main():
     repr_df = repr_df[repr_df.mandate_expiry_date.isnull()]
     repr_df.seniority = repr_df.seniority.apply(seniority_as_cadencies_count)
     repr_df.drop("mandate_expiry_date", axis=1, inplace=True)
+    repr_df.academic_degree = repr_df.academic_degree.fillna("None")
+    repr_df.sejm_function = repr_df.sejm_function.fillna("None")
+    repr_df.party_function = repr_df.party_function.fillna("None")
     translate_columns(repr_df)
     save_repr_pickle(repr_df)
 

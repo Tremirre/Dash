@@ -58,3 +58,42 @@ def sum_repr_funds(repr) -> float:
             other_shares_value,
         ]
     )
+
+
+def get_repr_funds_breakup(record):
+    cash_pl = record.cash_polish_currency
+    cash_fg = record.cash_foreign_currency
+    securities = record.securites_value
+    house_value = record.house_value
+    flat_value = record.flat_value
+    farm_estate_value = record.farm_estate_value
+    other_estates_value = record.other_estates_value
+    other_shares_value = record.other_shares_value
+    if type(house_value) is list:
+        house_value = sum(house_value)
+    if type(flat_value) is list:
+        flat_value = sum(flat_value)
+    values = [
+        cash_pl,
+        cash_fg,
+        securities,
+        house_value,
+        flat_value,
+        farm_estate_value,
+        other_estates_value,
+        other_shares_value,
+    ]
+    values = [val if val > 0 else None for val in values]
+    return {
+        "Asset": [
+            "Cash in PLN",
+            "Cash in foreing currencies",
+            "Value of securities",
+            "Value of houses",
+            "Value of flats",
+            "Value of farms",
+            "Value of other estates",
+            "Value of other shares",
+        ],
+        "Value": values,
+    }
