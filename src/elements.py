@@ -85,7 +85,16 @@ def get_icon_entry(text: str, element_id: str) -> html.Div:
 def get_repr_vis_section():
     return html.Div(
         children=[
-            html.Div(children=[], id="repr-other", className="repr-other"),
+            html.Div(
+                children=[
+                    dcc.Graph(
+                        id="repr-participation-plot", config={"displayModeBar": False}
+                    ),
+                    dcc.Graph(id="repr-votes-plot", config={"displayModeBar": False}),
+                ],
+                id="repr-other",
+                className="repr-other",
+            ),
             dcc.Graph(id="repr-funds-breakup", config={"displayModeBar": False}),
             html.Div(
                 children=[

@@ -21,6 +21,8 @@ app = Dash(__name__)
         Output("farm-array", "children"),
         Output("experience-array", "children"),
         Output("repr-funds-breakup", "figure"),
+        Output("repr-participation-plot", "figure"),
+        Output("repr-votes-plot", "figure"),
     ],
     Input("sejm-plot", "clickData"),
     prevent_initial_callback=True,
@@ -99,6 +101,44 @@ def test_click_data(repr_data):
         paper_bgcolor="rgb(240, 240, 240)",
         plot_bgcolor="rgb(240, 240, 240)",
     )
+
+    vp_data = {"val": [clicked_entry.voting_participation], "label": [""]}
+    color = "green"
+    if vp_data["val"][0] < 90:
+        color = "lightgreen"
+    if vp_data["val"][0] < 80:
+        color = "yellow"
+    if vp_data["val"][0] < 65:
+        color = "orange"
+    if vp_data["val"][0] < 50:
+        vp_data = "red"
+
+    vp_fig = px.bar(vp_data, x="val", y="label", orientation="h", text_auto=True)
+    vp_fig.update_traces(marker=dict(color=[color]))
+    vp_fig.update_layout(
+        xaxis=dict(range=[0, 100], title=""),
+        yaxis=dict(title=""),
+        title=dict(
+            text="<b>Participation in voting sessions [%]:</b>",
+            font=dict(family="Montserrat-Thin", size=16),
+        ),
+        paper_bgcolor="rgb(240, 240, 240)",
+        plot_bgcolor="rgb(240, 240, 240)",
+    )
+
+    vc_data = {"val": [clicked_entry.votes_count], "label": [""]}
+
+    vc_fig = px.bar(vc_data, x="val", y="label", orientation="h", text_auto=True)
+    vc_fig.update_layout(
+        xaxis=dict(range=[0, 500_000], title=""),
+        yaxis=dict(title=""),
+        title=dict(
+            text="<b>Number of votes the representative has received:</b>",
+            font=dict(family="Montserrat-Thin", size=16),
+        ),
+        paper_bgcolor="rgb(240, 240, 240)",
+        plot_bgcolor="rgb(240, 240, 240)",
+    )
     return (
         name,
         repr_data_format,
@@ -108,6 +148,8 @@ def test_click_data(repr_data):
         farm_icons,
         exp_icons,
         funds_fig,
+        vp_fig,
+        vc_fig,
     )
 
 

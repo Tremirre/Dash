@@ -37,10 +37,9 @@
     height: 400px;
 }
 
-.repr-stats-panel {
-    padding: 16px;
-    background-clip: border-box;
-    font-size: 16px;
+.repr-other {
+    display: grid;
+    grid-auto-flow: row;
 }
 
 .icon-entry {
@@ -64,14 +63,8 @@
     height: 80px;
 }
 
-@keyframes show-up {
-    from {
-        transform: scale(0);
-        opacity: 0;
-    }
-
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
+.repr-stats-panel {
+    padding: 16px;
+    background-clip: border-box;
+    font-size: 16px;
 }
