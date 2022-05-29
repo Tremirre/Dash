@@ -60,12 +60,13 @@
     animation: slideInRight 0.5s forwards;
 }
 
-.star {
-    width: 40px;
+.flat {
     height: 80px;
+    opacity: 0;
+    animation: slideInRight 0.5s forwards;
 }
 
-.flat {
+.star {
     width: 40px;
     height: 80px;
 }
@@ -114,4 +115,8 @@
 
 .i8 {
     animation-delay: 1.8s;
+}
+
+.i9 {
+    animation-delay: 2s;
 }

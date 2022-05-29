@@ -63,7 +63,7 @@ def test_click_data(repr_data):
         else:
             num_flats = 1
     exp = clicked_entry.seniority
-
+    flat_width = min(50, 270 // (num_flats if num_flats > 0 else 1))
     car_icons = [
         html.Img(src="/assets/icons/car.svg", className=f"icon i{i}")
         for i in range(num_cars)
@@ -73,7 +73,7 @@ def test_click_data(repr_data):
         for i in range(num_houses)
     ]
     flat_icons = [
-        html.Img(src="/assets/icons/flat.svg", className=f"flat icon i{i}")
+        html.Img(src="/assets/icons/flat.svg", className=f"flat i{i}", width=flat_width)
         for i in range(num_flats)
     ]
     farm_icons = [
