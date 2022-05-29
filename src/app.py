@@ -51,13 +51,13 @@ def test_click_data(repr_data):
     num_cars = int(clicked_entry.vehicles_count)
     num_farms = 1 if clicked_entry.farm_estate_size else 0
     num_houses = 0
-    if not clicked_entry.house_size:
+    if clicked_entry.house_size:
         if type(clicked_entry.house_size) is list:
             num_houses = len(clicked_entry.house_size)
         else:
             num_houses = 1
     num_flats = 0
-    if not clicked_entry.flat_size:
+    if clicked_entry.flat_size:
         if type(clicked_entry.flat_size) is list:
             num_flats = len(clicked_entry.flat_size)
         else:
@@ -65,23 +65,24 @@ def test_click_data(repr_data):
     exp = clicked_entry.seniority
 
     car_icons = [
-        html.Img(src="/assets/icons/car.svg", className="icon") for _ in range(num_cars)
+        html.Img(src="/assets/icons/car.svg", className=f"icon i{i}")
+        for i in range(num_cars)
     ]
     house_icons = [
-        html.Img(src="/assets/icons/house.svg", className="icon")
-        for _ in range(num_houses)
+        html.Img(src="/assets/icons/house.svg", className=f"icon i{i}")
+        for i in range(num_houses)
     ]
     flat_icons = [
-        html.Img(src="/assets/icons/flat.svg", className="icon")
-        for _ in range(num_flats)
+        html.Img(src="/assets/icons/flat.svg", className=f"flat icon i{i}")
+        for i in range(num_flats)
     ]
     farm_icons = [
-        html.Img(src="/assets/icons/farm.svg", className="icon")
-        for _ in range(num_farms)
+        html.Img(src="/assets/icons/farm.svg", className=f"icon i{i}")
+        for i in range(num_farms)
     ]
     exp_icons = [
-        html.Img(src="/assets/icons/star.svg", className="star-icon")
-        for _ in range(exp)
+        html.Img(src="/assets/icons/star.svg", className=f"star icon i{i}")
+        for i in range(exp)
     ]
 
     funds_breakup = get_repr_funds_breakup(clicked_entry)
@@ -124,6 +125,7 @@ def test_click_data(repr_data):
         ),
         paper_bgcolor="rgb(240, 240, 240)",
         plot_bgcolor="rgb(240, 240, 240)",
+        transition=dict(duration=1000),
     )
 
     vc_data = {"val": [clicked_entry.votes_count], "label": [""]}
@@ -138,6 +140,7 @@ def test_click_data(repr_data):
         ),
         paper_bgcolor="rgb(240, 240, 240)",
         plot_bgcolor="rgb(240, 240, 240)",
+        transition=dict(duration=1000),
     )
     return (
         name,

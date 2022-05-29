@@ -12,7 +12,10 @@ class Server:
         self.app.layout = html.Div(
             children=[
                 html.Div(
-                    children=[html.H1("REPRESENTATIVES OF THE IX-th SEJM CADENCY")],
+                    children=[
+                        html.H1("REPRESENTATIVES OF THE IX-th SEJM CADENCY", id="title"),
+                        html.Button("Execute", id="test-executor", n_clicks=0),
+                    ],
                     className="title-section",
                 ),
                 html.Br(),
