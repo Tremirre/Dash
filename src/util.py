@@ -1,4 +1,12 @@
+import random
+
 import numpy as np
+
+from string import digits, ascii_letters
+
+
+def get_random_id():
+    return "".join(random.choices(digits + ascii_letters, k=24))
 
 
 def get_circle_points(

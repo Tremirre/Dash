@@ -1,0 +1,57 @@
+.icon {
+    width: 50px;
+    height: 80px;
+    opacity: 0;
+    animation: slideInRight 0.5s forwards;
+}
+
+.flat {
+    height: 80px;
+    opacity: 0;
+    animation: slideInRight 0.5s forwards;
+}
+
+.star {
+    width: 40px;
+    height: 80px;
+}
+
+.i0 {
+    animation-delay: 0.2s;
+}
+
+.i1 {
+    animation-delay: 0.4s;
+}
+
+.i2 {
+    animation-delay: 0.6s;
+}
+
+.i3 {
+    animation-delay: 0.8s;
+}
+
+.i4 {
+    animation-delay: 1s;
+}
+
+.i5 {
+    animation-delay: 1.2s;
+}
+
+.i6 {
+    animation-delay: 1.4s;
+}
+
+.i7 {
+    animation-delay: 1.6s;
+}
+
+.i8 {
+    animation-delay: 1.8s;
+}
+
+.i9 {
+    animation-delay: 2s;
+}

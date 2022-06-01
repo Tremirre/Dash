@@ -1,14 +1,26 @@
 import plotly.express as px
 
+import util
+
 from dash import Dash, html, dcc
 from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 
 from elements import get_scatter_matrix
 from data import REPR_DF
-from util import sum_repr_funds, get_repr_funds_breakup
 
 app = Dash(__name__)
+
+
+app.clientside_callback(
+    """
+    function(n_clicks) {
+        return;
+    }
+    """,
+    Output("placeholder", "children"),
+    Input("test-button", "n_clicks"),
+)
 
 
 @app.callback(
@@ -43,7 +55,7 @@ def test_click_data(repr_data):
     Total funds and estates value: {total:,.2f} PLN\n
     Total loans value: {loans_value:,.2f} PLN
     """.format(
-        **clicked_entry._asdict(), total=sum_repr_funds(clicked_entry)
+        **clicked_entry._asdict(), total=util.sum_repr_funds(clicked_entry)
     )
     repr_data_format = repr_data_format.split("\n")
     repr_data_format = [html.P(verse) for verse in repr_data_format]
@@ -65,27 +77,46 @@ def test_click_data(repr_data):
     exp = clicked_entry.seniority
     flat_width = min(50, 270 // (num_flats if num_flats > 0 else 1))
     car_icons = [
-        html.Img(src="/assets/icons/car.svg", className=f"icon i{i}")
+        html.Img(
+            src="/assets/icons/car.svg", className=f"icon i{i}", id=util.get_random_id()
+        )
         for i in range(num_cars)
     ]
     house_icons = [
-        html.Img(src="/assets/icons/house.svg", className=f"icon i{i}")
+        html.Img(
+            src="/assets/icons/house.svg",
+            className=f"icon i{i}",
+            id=util.get_random_id(),
+        )
         for i in range(num_houses)
     ]
     flat_icons = [
-        html.Img(src="/assets/icons/flat.svg", className=f"flat i{i}", width=flat_width)
+        html.Img(
+            src="/assets/icons/flat.svg",
+            className=f"flat i{i}",
+            width=flat_width,
+            id=util.get_random_id(),
+        )
         for i in range(num_flats)
     ]
     farm_icons = [
-        html.Img(src="/assets/icons/farm.svg", className=f"icon i{i}")
+        html.Img(
+            src="/assets/icons/farm.svg",
+            className=f"icon i{i}",
+            id=util.get_random_id(),
+        )
         for i in range(num_farms)
     ]
     exp_icons = [
-        html.Img(src="/assets/icons/star.svg", className=f"star icon i{i}")
+        html.Img(
+            src="/assets/icons/star.svg",
+            className=f"star icon i{i}",
+            id=util.get_random_id(),
+        )
         for i in range(exp)
     ]
 
-    funds_breakup = get_repr_funds_breakup(clicked_entry)
+    funds_breakup = util.get_repr_funds_breakup(clicked_entry)
     funds_fig = px.pie(
         funds_breakup, values="Value", names="Asset", height=400, hole=0.4
     )

@@ -11,14 +11,7 @@ class Server:
     def setup_layout(self):
         self.app.layout = html.Div(
             children=[
-                html.Div(
-                    children=[
-                        html.H1("REPRESENTATIVES OF THE IX-th SEJM CADENCY", id="title"),
-                        html.Button("Execute", id="test-executor", n_clicks=0),
-                    ],
-                    className="title-section",
-                ),
-                html.Br(),
+                elements.get_nav_bar(),
                 elements.get_sejm_plot_section(),
                 elements.get_repr_vis_section(),
                 html.Br(),

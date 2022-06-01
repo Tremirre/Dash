@@ -1,8 +1,30 @@
-.title-section {
+.nav-bar {
     font-weight: 100;
     font-family: "Montserrat-SemiBold";
     width: 100%;
+    height: 80px;
+    z-index: 100;
+    top: 0;
+    position: fixed;
+    background-color: white;
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: center;
     text-align: center;
+    grid-template-columns: 1fr 3fr 1fr;
+}
+
+.nav-bar>div {
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-bar>h2 {
+    font-size: 1.75em;
+    height: 80px;
+    animation: fadeIn 5s forwards;
 }
 
 .sejm-plot-section {
@@ -11,6 +33,7 @@
     grid-auto-flow: column;
     grid-template-columns: 67% 33%;
     height: 500px;
+    padding-top: 80px;
 }
 
 .sejm-plot-div {
@@ -53,70 +76,8 @@
     vertical-align: middle;
 }
 
-.icon {
-    width: 50px;
-    height: 80px;
-    opacity: 0;
-    animation: slideInRight 0.5s forwards;
-}
-
-.flat {
-    height: 80px;
-    opacity: 0;
-    animation: slideInRight 0.5s forwards;
-}
-
-.star {
-    width: 40px;
-    height: 80px;
-}
-
 .repr-stats-panel {
     padding: 16px;
     background-clip: border-box;
     font-size: 16px;
-}
-
-#title {
-    animation: fadeIn 5s forwards;
-}
-
-.i0 {
-    animation-delay: 0.2s;
-}
-
-.i1 {
-    animation-delay: 0.4s;
-}
-
-.i2 {
-    animation-delay: 0.6s;
-}
-
-.i3 {
-    animation-delay: 0.8s;
-}
-
-.i4 {
-    animation-delay: 1s;
-}
-
-.i5 {
-    animation-delay: 1.2s;
-}
-
-.i6 {
-    animation-delay: 1.4s;
-}
-
-.i7 {
-    animation-delay: 1.6s;
-}
-
-.i8 {
-    animation-delay: 1.8s;
-}
-
-.i9 {
-    animation-delay: 2s;
 }

@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 
+import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 import plotly.express as px
 
@@ -10,7 +11,18 @@ from util import generate_sejm_plot_rings
 from data import REPR_DF
 
 
-def get_main_sejm_plot():
+def get_nav_bar() -> html.Div:
+    return html.Div(
+        children=[
+            html.Img(src="/assets/logos/put_logo.svg", height=80, width=300),
+            html.H2("REPRESENTATIVES OF THE IX-th SEJM CADENCY", id="title"),
+            html.Div(children=[html.Button("Execute", id="test-button", n_clicks=0)])
+        ],
+        className="nav-bar",
+    )
+
+
+def get_main_sejm_plot() -> dcc.Graph:
     x, y = generate_sejm_plot_rings()
     repr_seats_df = REPR_DF.copy()
     repr_seats_df["party_size"] = repr_seats_df.party_short.apply(
@@ -55,14 +67,14 @@ def get_main_sejm_plot():
     )
 
 
-def get_repr_data_section():
+def get_repr_data_section() -> html.Div:
     return html.Div(
         children=[html.H2(id="repr-name"), html.P(id="repr-data")],
         className="side-bar",
     )
 
 
-def get_sejm_plot_section():
+def get_sejm_plot_section() -> html.Div:
     return html.Span(
         children=[
             html.Div(children=[get_main_sejm_plot()], className="sejm-plot-div"),
@@ -82,7 +94,7 @@ def get_icon_entry(text: str, element_id: str) -> html.Div:
     )
 
 
-def get_repr_vis_section():
+def get_repr_vis_section() -> html.Div:
     return html.Div(
         children=[
             html.Div(
