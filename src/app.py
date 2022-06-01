@@ -78,7 +78,10 @@ def test_click_data(repr_data):
     flat_width = min(50, 270 // (num_flats if num_flats > 0 else 1))
     car_icons = [
         html.Img(
-            src="/assets/icons/car.svg", className=f"icon i{i}", id=util.get_random_id()
+            src="/assets/icons/car.svg",
+            className=f"icon i{i}",
+            id=util.get_random_id(),
+            style={"--order": i},
         )
         for i in range(num_cars)
     ]
@@ -87,15 +90,16 @@ def test_click_data(repr_data):
             src="/assets/icons/house.svg",
             className=f"icon i{i}",
             id=util.get_random_id(),
+            style={"--order": i},
         )
         for i in range(num_houses)
     ]
     flat_icons = [
         html.Img(
             src="/assets/icons/flat.svg",
-            className=f"flat i{i}",
-            width=flat_width,
+            className=f"icon i{i}",
             id=util.get_random_id(),
+            style={"--order": i, "width": f"{flat_width}px"},
         )
         for i in range(num_flats)
     ]
@@ -104,6 +108,7 @@ def test_click_data(repr_data):
             src="/assets/icons/farm.svg",
             className=f"icon i{i}",
             id=util.get_random_id(),
+            style={"--order": i},
         )
         for i in range(num_farms)
     ]
@@ -112,6 +117,7 @@ def test_click_data(repr_data):
             src="/assets/icons/star.svg",
             className=f"star icon i{i}",
             id=util.get_random_id(),
+            style={"--order": i},
         )
         for i in range(exp)
     ]
