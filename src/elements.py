@@ -1,13 +1,11 @@
-import pandas as pd
-import numpy as np
-
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 import plotly.express as px
 
+import util
+
 from dash import dcc, html
 
-from util import generate_sejm_plot_rings
 from data import REPR_DF
 
 
@@ -16,14 +14,14 @@ def get_nav_bar() -> html.Div:
         children=[
             html.Img(src="/assets/logos/put_logo.svg", height=80, width=300),
             html.H2("REPRESENTATIVES OF THE IX-th SEJM CADENCY", id="title"),
-            html.Div(children=[html.Button("Execute", id="test-button", n_clicks=0)])
+            html.Div(children=[html.Button("Execute", id="test-button", n_clicks=0)]),
         ],
         className="nav-bar",
     )
 
 
 def get_main_sejm_plot() -> dcc.Graph:
-    x, y = generate_sejm_plot_rings()
+    x, y = util.generate_sejm_plot_rings()
     repr_seats_df = REPR_DF.copy()
     repr_seats_df["party_size"] = repr_seats_df.party_short.apply(
         lambda party: repr_seats_df.party_short.to_list().count(party)
@@ -148,3 +146,70 @@ def get_scatter_matrix(dims):
     fig.add_trace(go.Splom(showupperhalf=False))
 
     return fig
+
+
+def get_icons_array(count: int, randomize_id: bool, icon_name: str, **kwargs):
+    style_dict = dict(**kwargs)
+    return [
+        html.Img(
+            src=f"/assets/icons/{icon_name}",
+            className=f"{icon_name.split('.')[0]} icon",
+            id=util.get_random_id() if randomize_id else i,
+            style=util.inplace_update_dict_copy(style_dict, "--order", i),
+        )
+        for i in range(count)
+    ]
+
+
+def get_funds_fig(record):
+    funds_breakup = util.get_repr_funds_breakup(record)
+    funds_fig = px.pie(
+        funds_breakup, values="Value", names="Asset", height=400, hole=0.4
+    )
+    funds_fig.update_traces(
+        hovertemplate="Value: <b>%{value}PLN</b><br>Asset type: <b>%{label}</b>"
+    )
+    funds_fig.update_layout(
+        hoverlabel=dict(bgcolor="white", font_size=12, font_family="Rockwell"),
+        title=dict(
+            text="<b>Funds Breakdown</b>",
+            font=dict(family="Montserrat-Thin", size=24),
+        ),
+        margin=dict(l=20, b=20, r=20, t=80),
+        paper_bgcolor="rgb(240, 240, 240)",
+        plot_bgcolor="rgb(240, 240, 240)",
+    )
+    return funds_fig
+
+
+def get_voting_participation_fig(vp_data: dict, color: str):
+    vp_fig = px.bar(vp_data, x="val", y="label", orientation="h", text_auto=True)
+    vp_fig.update_traces(marker=dict(color=[color]))
+    vp_fig.update_layout(
+        xaxis=dict(range=[0, 100], title=""),
+        yaxis=dict(title=""),
+        title=dict(
+            text="<b>Participation in voting sessions [%]:</b>",
+            font=dict(family="Montserrat-Thin", size=16),
+        ),
+        paper_bgcolor="rgb(240, 240, 240)",
+        plot_bgcolor="rgb(240, 240, 240)",
+        transition=dict(duration=1000),
+    )
+    return vp_fig
+
+
+def get_votes_count_fig(vc_data: dict):
+    vc_fig = px.bar(vc_data, x="val", y="label", orientation="h", text_auto=True)
+    vc_fig.update_layout(
+        xaxis=dict(range=[0, 500_000], title=""),
+        yaxis=dict(title=""),
+        title=dict(
+            text="<b>Number of votes the representative has received:</b>",
+            font=dict(family="Montserrat-Thin", size=16),
+        ),
+        paper_bgcolor="rgb(240, 240, 240)",
+        plot_bgcolor="rgb(240, 240, 240)",
+        transition=dict(duration=1000),
+    )
+    return vc_fig

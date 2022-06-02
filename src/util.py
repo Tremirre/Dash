@@ -1,4 +1,6 @@
 import random
+import typing
+import copy
 
 import numpy as np
 
@@ -41,15 +43,15 @@ def generate_sejm_plot_rings(arc_length=0.45, r_0=1.6, dr=0.8, num_points=460):
     return X, Y
 
 
-def sum_repr_funds(repr) -> float:
-    cash_pl = repr.cash_polish_currency
-    cash_fg = repr.cash_foreign_currency
-    securities = repr.securites_value
-    house_value = repr.house_value
-    flat_value = repr.flat_value
-    farm_estate_value = repr.farm_estate_value
-    other_estates_value = repr.other_estates_value
-    other_shares_value = repr.other_shares_value
+def sum_repr_funds(record) -> float:
+    cash_pl = record.cash_polish_currency
+    cash_fg = record.cash_foreign_currency
+    securities = record.securites_value
+    house_value = record.house_value
+    flat_value = record.flat_value
+    farm_estate_value = record.farm_estate_value
+    other_estates_value = record.other_estates_value
+    other_shares_value = record.other_shares_value
     if type(house_value) is list:
         house_value = sum(house_value)
     if type(flat_value) is list:
@@ -105,3 +107,29 @@ def get_repr_funds_breakup(record):
         ],
         "Value": values,
     }
+
+
+def inplace_update_dict_copy(dict_to_update: dict, key: str, value: typing.Any) -> dict:
+    copied = copy.deepcopy(dict_to_update)
+    copied[key] = value
+    return copied
+
+
+def get_count_from_estate_field(field: typing.Union[None, float, list[float]]) -> int:
+    if not field:
+        return 0
+    if type(field) is list:
+        return len(field)
+    return 1
+
+
+def get_color_from_value(value: float) -> str:
+    if value < 50:
+        return "red"
+    if value < 65:
+        return "orange"
+    if value < 80:
+        return "yellow"
+    if value < 90:
+        return "lightgreen"
+    return "green"

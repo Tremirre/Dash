@@ -1,12 +1,12 @@
 import plotly.express as px
 
 import util
+import elements
 
 from dash import Dash, html, dcc
 from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 
-from elements import get_scatter_matrix
 from data import REPR_DF
 
 app = Dash(__name__)
@@ -62,123 +62,33 @@ def test_click_data(repr_data):
 
     num_cars = int(clicked_entry.vehicles_count)
     num_farms = 1 if clicked_entry.farm_estate_size else 0
-    num_houses = 0
-    if clicked_entry.house_size:
-        if type(clicked_entry.house_size) is list:
-            num_houses = len(clicked_entry.house_size)
-        else:
-            num_houses = 1
-    num_flats = 0
-    if clicked_entry.flat_size:
-        if type(clicked_entry.flat_size) is list:
-            num_flats = len(clicked_entry.flat_size)
-        else:
-            num_flats = 1
+    num_houses = util.get_count_from_estate_field(clicked_entry.house_size)
+    num_flats = util.get_count_from_estate_field(clicked_entry.flat_size)
+
     exp = clicked_entry.seniority
     flat_width = min(50, 270 // (num_flats if num_flats > 0 else 1))
-    car_icons = [
-        html.Img(
-            src="/assets/icons/car.svg",
-            className=f"icon i{i}",
-            id=util.get_random_id(),
-            style={"--order": i},
-        )
-        for i in range(num_cars)
-    ]
-    house_icons = [
-        html.Img(
-            src="/assets/icons/house.svg",
-            className=f"icon i{i}",
-            id=util.get_random_id(),
-            style={"--order": i},
-        )
-        for i in range(num_houses)
-    ]
-    flat_icons = [
-        html.Img(
-            src="/assets/icons/flat.svg",
-            className=f"icon i{i}",
-            id=util.get_random_id(),
-            style={"--order": i, "width": f"{flat_width}px"},
-        )
-        for i in range(num_flats)
-    ]
-    farm_icons = [
-        html.Img(
-            src="/assets/icons/farm.svg",
-            className=f"icon i{i}",
-            id=util.get_random_id(),
-            style={"--order": i},
-        )
-        for i in range(num_farms)
-    ]
-    exp_icons = [
-        html.Img(
-            src="/assets/icons/star.svg",
-            className=f"star icon i{i}",
-            id=util.get_random_id(),
-            style={"--order": i},
-        )
-        for i in range(exp)
-    ]
+    car_icons = elements.get_icons_array(
+        num_cars, randomize_id=True, icon_name="car.svg"
+    )
+    house_icons = elements.get_icons_array(
+        num_houses, randomize_id=True, icon_name="house.svg"
+    )
+    flat_icons = elements.get_icons_array(
+        num_flats, randomize_id=True, icon_name="flat.svg", width=f"{flat_width}px"
+    )
+    farm_icons = elements.get_icons_array(
+        num_farms, randomize_id=True, icon_name="farm.svg"
+    )
+    exp_icons = elements.get_icons_array(exp, randomize_id=True, icon_name="star.svg")
 
-    funds_breakup = util.get_repr_funds_breakup(clicked_entry)
-    funds_fig = px.pie(
-        funds_breakup, values="Value", names="Asset", height=400, hole=0.4
-    )
-    funds_fig.update_traces(
-        hovertemplate="Value: <b>%{value}PLN</b><br>Asset type: <b>%{label}</b>"
-    )
-    funds_fig.update_layout(
-        hoverlabel=dict(bgcolor="white", font_size=12, font_family="Rockwell"),
-        title=dict(
-            text="<b>Funds Breakdown</b>",
-            font=dict(family="Montserrat-Thin", size=24),
-        ),
-        margin=dict(l=20, b=20, r=20, t=80),
-        paper_bgcolor="rgb(240, 240, 240)",
-        plot_bgcolor="rgb(240, 240, 240)",
-    )
+    funds_fig = elements.get_funds_fig(clicked_entry)
 
     vp_data = {"val": [clicked_entry.voting_participation], "label": [""]}
-    color = "green"
-    if vp_data["val"][0] < 90:
-        color = "lightgreen"
-    if vp_data["val"][0] < 80:
-        color = "yellow"
-    if vp_data["val"][0] < 65:
-        color = "orange"
-    if vp_data["val"][0] < 50:
-        vp_data = "red"
-
-    vp_fig = px.bar(vp_data, x="val", y="label", orientation="h", text_auto=True)
-    vp_fig.update_traces(marker=dict(color=[color]))
-    vp_fig.update_layout(
-        xaxis=dict(range=[0, 100], title=""),
-        yaxis=dict(title=""),
-        title=dict(
-            text="<b>Participation in voting sessions [%]:</b>",
-            font=dict(family="Montserrat-Thin", size=16),
-        ),
-        paper_bgcolor="rgb(240, 240, 240)",
-        plot_bgcolor="rgb(240, 240, 240)",
-        transition=dict(duration=1000),
-    )
-
+    color = util.get_color_from_value(clicked_entry.voting_participation)
+    vp_fig = elements.get_voting_participation_fig(vp_data, color)
     vc_data = {"val": [clicked_entry.votes_count], "label": [""]}
+    vc_fig = elements.get_votes_count_fig(vc_data)
 
-    vc_fig = px.bar(vc_data, x="val", y="label", orientation="h", text_auto=True)
-    vc_fig.update_layout(
-        xaxis=dict(range=[0, 500_000], title=""),
-        yaxis=dict(title=""),
-        title=dict(
-            text="<b>Number of votes the representative has received:</b>",
-            font=dict(family="Montserrat-Thin", size=16),
-        ),
-        paper_bgcolor="rgb(240, 240, 240)",
-        plot_bgcolor="rgb(240, 240, 240)",
-        transition=dict(duration=1000),
-    )
     return (
         name,
         repr_data_format,
@@ -195,5 +105,5 @@ def test_click_data(repr_data):
 
 @app.callback(Output("scatter_matrix", "figure"), Input("dropdown", "value"))
 def update_bar_chart(dims):
-    fig = get_scatter_matrix(dims)
+    fig = elements.get_scatter_matrix(dims)
     return fig
