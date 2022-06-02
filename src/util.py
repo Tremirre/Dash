@@ -97,7 +97,7 @@ def get_repr_funds_breakup(record):
     return {
         "Asset": [
             "Cash in PLN",
-            "Cash in foreing currencies",
+            "Cash in foreign currencies",
             "Value of securities",
             "Value of houses",
             "Value of flats",

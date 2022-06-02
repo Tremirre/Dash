@@ -35,7 +35,7 @@ def page_changer(*args):
     changed_id = [p["prop_id"] for p in callback_context.triggered][0]
     if "party-button" in changed_id:
         return layout.PAGE_2
-    if "about-button" in changed_id:
+    if "test-button" in changed_id:
         return layout.PAGE_3
     return layout.PAGE_1
 

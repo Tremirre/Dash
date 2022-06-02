@@ -29,14 +29,14 @@ def get_nav_bar() -> html.Div:
                         n_clicks=0,
                     ),
                     html.Button(
-                        "About Section",
-                        id="about-button",
+                        "Test Button",
+                        id="test-button",
                         className="nav-button",
                         n_clicks=0,
                     ),
                     html.Button(
-                        "Test Button",
-                        id="test-button",
+                        "About Section",
+                        id="about-button",
                         className="nav-button",
                         n_clicks=0,
                     ),
