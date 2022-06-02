@@ -1,7 +1,3 @@
 src/testing.ipynb
-src/__pycache__/data.cpython-310.pyc
-src/__pycache__/app.cpython-310.pyc
-src/__pycache__/elements.cpython-310.pyc
-src/__pycache__/server.cpython-310.pyc
-src/__pycache__/util.cpython-310.pyc
 .vscode/settings.json
+*.pyc
