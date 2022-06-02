@@ -2,15 +2,16 @@ import plotly.express as px
 
 import util
 import elements
+import layout
 
-from dash import Dash, html, dcc
+from dash import Dash, html, dcc, callback_context
 from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 
 from data import REPR_DF
 
 app = Dash(__name__)
-
+app.config.suppress_callback_exceptions = True
 
 app.clientside_callback(
     """
@@ -21,6 +22,22 @@ app.clientside_callback(
     Output("placeholder", "children"),
     Input("test-button", "n_clicks"),
 )
+
+
+@app.callback(
+    Output("page-layout", "children"),
+    Input("individual-button", "n_clicks"),
+    Input("party-button", "n_clicks"),
+    Input("about-button", "n_clicks"),
+    Input("test-button", "n_clicks"),
+)
+def page_changer(*args):
+    changed_id = [p["prop_id"] for p in callback_context.triggered][0]
+    if "party-button" in changed_id:
+        return layout.PAGE_2
+    if "about-button" in changed_id:
+        return layout.PAGE_3
+    return layout.PAGE_1
 
 
 @app.callback(
@@ -39,7 +56,7 @@ app.clientside_callback(
     Input("sejm-plot", "clickData"),
     prevent_initial_callback=True,
 )
-def test_click_data(repr_data):
+def on_sejm_plot_clicked(repr_data):
     try:
         name = repr_data["points"][0]["customdata"][0]
     except TypeError:
@@ -49,7 +66,6 @@ def test_click_data(repr_data):
     Election list: {list}\n
     Political party: {party_full}\n
     Constituency city: {constituency_city}\n
-    Votes count: {votes_count}\n
     City of birth: {city_of_birth}\n
     Date of birth: {date_of_birth}\n
     Total funds and estates value: {total:,.2f} PLN\n

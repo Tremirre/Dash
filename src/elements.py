@@ -14,7 +14,34 @@ def get_nav_bar() -> html.Div:
         children=[
             html.Img(src="/assets/logos/put_logo.svg", height=80, width=300),
             html.H2("REPRESENTATIVES OF THE IX-th SEJM CADENCY", id="title"),
-            html.Div(children=[html.Button("Execute", id="test-button", n_clicks=0)]),
+            html.Div(
+                children=[
+                    html.Button(
+                        "By Individual",
+                        id="individual-button",
+                        className="nav-button",
+                        n_clicks=0,
+                    ),
+                    html.Button(
+                        "By Party",
+                        id="party-button",
+                        className="nav-button",
+                        n_clicks=0,
+                    ),
+                    html.Button(
+                        "About Section",
+                        id="about-button",
+                        className="nav-button",
+                        n_clicks=0,
+                    ),
+                    html.Button(
+                        "Test Button",
+                        id="test-button",
+                        className="nav-button",
+                        n_clicks=0,
+                    ),
+                ]
+            ),
         ],
         className="nav-bar",
     )
@@ -67,7 +94,13 @@ def get_main_sejm_plot() -> dcc.Graph:
 
 def get_repr_data_section() -> html.Div:
     return html.Div(
-        children=[html.H2(id="repr-name"), html.P(id="repr-data")],
+        children=[
+            html.H2("Choose a representative", id="repr-name"),
+            html.P(
+                "For which the data should be displayed",
+                id="repr-data",
+            ),
+        ],
         className="side-bar",
     )
 
