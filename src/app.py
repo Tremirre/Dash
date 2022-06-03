@@ -68,18 +68,18 @@ def on_sejm_plot_clicked(repr_data):
     Constituency city: {constituency_city}\n
     City of birth: {city_of_birth}\n
     Date of birth: {date_of_birth}\n
-    Total funds and estates value: {total:,.2f} PLN\n
+    Total funds and estates value: {total_funds:,.2f} PLN\n
     Total loans value: {loans_value:,.2f} PLN
     """.format(
-        **clicked_entry._asdict(), total=util.sum_repr_funds(clicked_entry)
+        **clicked_entry._asdict()
     )
     repr_data_format = repr_data_format.split("\n")
     repr_data_format = [html.P(verse) for verse in repr_data_format]
 
     num_cars = int(clicked_entry.vehicles_count)
     num_farms = 1 if clicked_entry.farm_estate_size else 0
-    num_houses = util.get_count_from_estate_field(clicked_entry.house_size)
-    num_flats = util.get_count_from_estate_field(clicked_entry.flat_size)
+    num_houses = clicked_entry.num_houses
+    num_flats = clicked_entry.num_flats
 
     exp = clicked_entry.seniority
     flat_width = min(50, 270 // (num_flats if num_flats > 0 else 1))
