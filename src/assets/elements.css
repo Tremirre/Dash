@@ -11,7 +11,7 @@
     grid-auto-flow: column;
     justify-content: center;
     text-align: center;
-    grid-template-columns: 2fr 3fr 2fr;
+    grid-template-columns: 1fr 3fr 2fr;
 }
 
 .nav-bar>div {
@@ -21,7 +21,7 @@
 }
 
 .nav-bar>h2 {
-    font-size: 1.75em;
+    font-size: 1.5em;
     height: 100%;
     animation: fadeIn 5s forwards;
 }
