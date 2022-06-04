@@ -160,3 +160,22 @@ def display_clicked_data(clickData):
     ], [html.H3(full_name), html.Hr(style={"color": "white"})] + [
         html.H4(row) for row in text.split("\n")
     ]
+
+
+@app.callback(
+    Output("party-histogram", "figure"),
+    Input("party-plot", "clickData"),
+    Input("party-stats-dropdown", "value"),
+)
+def plot_histogram(clickData, value):
+    if clickData is None or value is None:
+        raise PreventUpdate()
+    point_dict = clickData["points"][0]
+    if point_dict["parent"]:
+        raise PreventUpdate()
+    repr_df = REPR_DF.copy()
+    selected = point_dict["id"] if "root" in point_dict else "Sejm"
+    if selected != "Sejm":
+        repr_df = repr_df[repr_df.party_short == selected]
+    fig = elements.get_histogram_fig(repr_df, value, selected)
+    return fig

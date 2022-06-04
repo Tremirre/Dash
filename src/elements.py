@@ -10,6 +10,24 @@ from data import REPR_DF
 
 
 PLOT_BG_COLOR = "rgb(240, 240, 240)"
+HIST_DROPDOWN_TRANSLATION = {
+    "List": "list",
+    "Constituency": "constituency_city",
+    "Votes Count": "votes_count",
+    "Seniority": "seniority",
+    "City of Birth": "city_of_birth",
+    "Education": "education",
+    "Occupation": "occupation",
+    "Voting Participation": "voting_participation",
+    "Cash in PLN": "cash_polish_currency",
+    "Foreign Cash": "cash_foreign_currency",
+    "Value of Other Shares": "other_shares_value",
+    "Vehicles Count": "vehicles_count",
+    "Debt": "loans_value",
+    "Total Funds": "total_funds",
+    "Number of Flats": "num_flats",
+    "Number of Houses": "num_houses",
+}
 
 
 def get_nav_bar() -> html.Div:
@@ -338,4 +356,48 @@ def get_party_plot_section():
 
 
 def get_party_stats_section():
-    return html.Div(className="party-stats section")
+    return html.Div(
+        children=[
+            html.Div(
+                children=dcc.Graph(
+                    id="party-histogram",
+                    config={
+                        "displayModeBar": False,
+                        "autosizable": True,
+                        "responsive": True,
+                    },
+                ),
+                className="party-histogram-div",
+            ),
+            html.Div(
+                children=[
+                    html.H2("Select attriute distribution of which to plot:"),
+                    html.Div(
+                        children=[
+                            dcc.Dropdown(
+                                options=list(HIST_DROPDOWN_TRANSLATION.keys()),
+                                id="party-stats-dropdown",
+                            )
+                        ]
+                    ),
+                ],
+                className="party-stats side-bar",
+            ),
+        ],
+        className="party-stats section",
+    )
+
+
+def get_histogram_fig(dataframe, value: str, selected: str):
+    fig = px.histogram(
+        dataframe, x=HIST_DROPDOWN_TRANSLATION[value], color="party_short"
+    )
+    fig.update_layout(
+        title=dict(
+            text=f"<b>Distribution of {value} for {selected}</b>",
+            font=dict(family="Montserrat-Thin", size=16),
+        ),
+        paper_bgcolor=PLOT_BG_COLOR,
+        plot_bgcolor=PLOT_BG_COLOR,
+    )
+    return fig

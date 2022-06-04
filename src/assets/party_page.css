@@ -26,3 +26,13 @@
     max-width: 90%;
     max-height: 100%;
 }
+
+.party-stats.section {
+    background-color: black;
+}
+
+#party-stats-dropdown {
+    font-size: 1.5em;
+    font-family: "Montserrat-Bold";
+    color: black;
+}

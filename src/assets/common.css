@@ -10,6 +10,7 @@
     padding: 20px;
     font-size: 15px;
     color: white;
+    z-index: 10;
 }
 
 .nav-bar {
