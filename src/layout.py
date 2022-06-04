@@ -1,5 +1,6 @@
 import elements
 
+import dash_bootstrap_components as dbc
 from dash import html, dcc
 
 PAGE_1 = [
@@ -16,38 +17,27 @@ PAGE_2 = [
 
 PAGE_3 = [
     elements.get_nav_bar(),
-    html.Div(
-        children=[
-            html.Div(
-                children=[
-                    html.H1("Political Parties"),
-                    html.H2("Prawo i Sprawiedliwość"),
-                    html.Img(src="assets/logos/Logo_PiS.svg.png", alt="PiS"),
-                    html.Br(),
-                    html.H2("Koalicja Obywatelska"),
-                    html.Img(src="assets/logos/Logo_KO.png", alt="KO"),
-                    html.Br(),
-                    html.H2("Lewica"),
-                    html.Img(src="assets/logos/Logo_Lewica.png", alt="Lewica"),
-                    html.Br(),
-                    html.H2("Koalicja Polska"),
-                    html.Img(src="assets/logos/Logo_PSL.png", alt="KP"),
-                    html.Br(),
-                    html.H2("Konfederacja"),
-                    html.Img(
-                        src="assets/logos/Logo_Konfederacja.png",
-                        alt="Konfederacja",
-                    ),
-                    html.Br(),
-                    html.H2("Polska2050"),
-                    html.Img(src="assets/logos/Logo_2050.png", alt="2050"),
-                ],
-                className="logo",
-            )
-        ],
-        className="partie",
-    ),
     html.Br(),
+    html.Div(children=[
+        html.H4("Analysis of parties"),
+        dcc.Dropdown(
+            id="dropdown-2",
+            options=[
+                "education",
+                "occupation",
+                "vehicles_count",
+                "cash_polish_currency",
+                "cash_foreign_currency",
+                "paper_value",
+                "loans_value"
+
+            ],
+            value="education",
+            multi=False
+        ),
+        dcc.Graph(id="bar-plot"),
+        dbc.Container(id = "table"),
+    ]),
     html.Div(
         [
             html.H4("Analysis of hajsik data using scatter matrix"),
@@ -68,3 +58,4 @@ PAGE_3 = [
     ),
     html.P(id="placeholder"),
 ]
+

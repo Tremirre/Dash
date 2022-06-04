@@ -179,3 +179,14 @@ def plot_histogram(clickData, value):
         repr_df = repr_df[repr_df.party_short == selected]
     fig = elements.get_histogram_fig(repr_df, value, selected)
     return fig
+
+
+@app.callback(Output("bar-plot", "figure"), Input("dropdown-2", "value"))
+def update_bar_chart(dims):
+    fig = elements.get_bar_char(dims)
+    return fig
+
+
+@app.callback(Output('table', 'children'), Input('dropdown-2', 'value'))
+def update_graphs(value):
+    return elements.get_table(value)
