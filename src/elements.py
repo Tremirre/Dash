@@ -246,3 +246,19 @@ def get_votes_count_fig(vc_data: dict):
         transition=dict(duration=1000),
     )
     return vc_fig
+
+
+def get_parties_fig():
+    party_count_df = (
+        REPR_DF.groupby(["party_full", "party_short", "list"], as_index=False)
+        .count()[["party_full", "party_short", "list", "name"]]
+        .rename(columns={"name": "repr_count"})
+    )
+    fig = px.sunburst(
+        party_count_df,
+        path=["party_short", "list"],
+        values="repr_count",
+        width=700,
+        height=700,
+    )
+    return fig

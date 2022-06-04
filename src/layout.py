@@ -10,11 +10,10 @@ PAGE_1 = [
 
 PAGE_2 = [
     elements.get_nav_bar(),
-    html.Br(),
-    html.Br(),
-    html.Br(),
-    html.Div(children=[html.H1("PAGE 2....")]),
-    html.H1("BBBBBBBBBBBBBBBBBBB"),
+    html.Div(
+        children=[dcc.Graph(id="party-plot", figure=elements.get_parties_fig())],
+        className="party-plot-section",
+    ),
 ]
 
 PAGE_3 = [
