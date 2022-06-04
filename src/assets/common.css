@@ -1,0 +1,60 @@
+.section {
+    width: 100%;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 67% 33%;
+}
+
+.side-bar {
+    background-color: black;
+    padding: 20px;
+    font-size: 15px;
+    color: white;
+}
+
+.nav-bar {
+    font-weight: 100;
+    font-family: "Montserrat-SemiBold";
+    width: 100%;
+    height: 80px;
+    z-index: 100;
+    top: 0;
+    padding-left: 10px;
+    position: fixed;
+    background-color: white;
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: center;
+    text-align: center;
+    grid-template-columns: 1fr 3fr 2fr;
+}
+
+.nav-bar>div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 25px;
+}
+
+.nav-bar>h2 {
+    font-size: 1.5em;
+    height: 100%;
+    animation: fadeIn 1s forwards;
+}
+
+.nav-button {
+    font-family: "Montserrat-SemiBold";
+    font-size: 0.8em;
+    height: 100%;
+    width: 90%;
+    border: none;
+    background-color: white;
+    color: black;
+    transition: 0.35s;
+}
+
+.nav-button:hover {
+    background-color: black;
+    color: white;
+    transform: translate(-5%, 5%);
+}

@@ -115,7 +115,7 @@ def get_sejm_plot_section() -> html.Div:
             html.Div(children=[get_main_sejm_plot()], className="sejm-plot-div"),
             get_repr_data_section(),
         ],
-        className="sejm-plot-section",
+        className="sejm-plot section",
     )
 
 
@@ -156,7 +156,7 @@ def get_repr_vis_section() -> html.Div:
                 className="repr-stats-panel",
             ),
         ],
-        className="repr-vis-section",
+        className="repr-vis section",
     )
 
 
@@ -333,9 +333,9 @@ def get_party_plot_section():
             ),
             get_party_side_bar(),
         ],
-        className="party-plot-section",
+        className="party-plot section",
     )
 
 
 def get_party_stats_section():
-    return html.Div(className="party-stats-section")
+    return html.Div(className="party-stats section")

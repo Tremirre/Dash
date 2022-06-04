@@ -1,9 +1,5 @@
-.party-plot-section {
+.party-plot.section {
     padding-top: 80px;
-    width: 100%;
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-columns: 67% 33%;
 }
 
 .party-plot-div {
