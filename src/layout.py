@@ -10,41 +10,8 @@ PAGE_1 = [
 
 PAGE_2 = [
     elements.get_nav_bar(),
-    html.Div(
-        children=[
-            html.Div(
-                children=[
-                    dcc.Graph(
-                        id="party-plot",
-                        figure=elements.get_parties_fig(),
-                        config={
-                            "displayModeBar": False,
-                            "autosizable": True,
-                            "responsive": True,
-                        },
-                    ),
-                ],
-                className="party-plot-div",
-            ),
-            html.Div(
-                children=[
-                    html.Div(
-                        children=[
-                            html.Img(
-                                src="/assets/logos/sejm.png", className="party-image"
-                            )
-                        ],
-                        className="party-image-div",
-                        id="party-image-div",
-                    ),
-                    html.Div(className="party-details", id="party-details"),
-                ],
-                id="party-side-bar",
-                className="side-bar",
-            ),
-        ],
-        className="party-plot-section",
-    ),
+    elements.get_party_plot_section(),
+    elements.get_party_stats_section(),
 ]
 
 PAGE_3 = [

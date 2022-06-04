@@ -63,18 +63,18 @@ def on_sejm_plot_clicked(repr_data):
         raise PreventUpdate()
     clicked_entry = next(REPR_DF.set_index("name").loc[[name]].fillna(0).itertuples())
     repr_data_format = """
-    Election list: {list}\n
-    Political party: {party_full}\n
-    Constituency city: {constituency_city}\n
-    City of birth: {city_of_birth}\n
-    Date of birth: {date_of_birth}\n
-    Total funds and estates value: {total_funds:,.2f} PLN\n
+    Political party: {party_full}
+    City of birth: {city_of_birth}
+    Date of birth: {date_of_birth}
+    Constituency city: {constituency_city}
+    Election list: {list}
+    Total funds and estates value: {total_funds:,.2f} PLN
     Total loans value: {loans_value:,.2f} PLN
     """.format(
         **clicked_entry._asdict()
     )
     repr_data_format = repr_data_format.split("\n")
-    repr_data_format = [html.P(verse) for verse in repr_data_format]
+    repr_data_format = [html.H4(verse) for verse in repr_data_format]
 
     num_cars = int(clicked_entry.vehicles_count)
     num_farms = 1 if clicked_entry.farm_estate_size else 0
@@ -138,12 +138,17 @@ def display_clicked_data(clickData):
         raise PreventUpdate()
     selected = point_dict["id"] if "root" in point_dict else "sejm"
     selected_data = util.get_selected_party_stats(selected, REPR_DF)
+    full_name = (
+        selected_data.party_full
+        if selected != "sejm"
+        else "Sejm Rzeczypospolitej Polskiej"
+    )
     text = """
-    Number of representatives: {name}\n
-    Total number of received votes: {votes_count:,.0f}\n
-    Average age: {age:.1f}\n
-    Average total funds: {total_funds:,.2f}\n
-    Average debt: {loans_value:,.2f}\n
+    Number of representatives: {name}
+    Total number of received votes: {votes_count:,.0f}
+    Average age: {age:.1f}
+    Average total funds: {total_funds:,.2f} PLN
+    Average debt: {loans_value:,.2f} PLN
     """.format(
         **selected_data._asdict()
     )
@@ -152,4 +157,6 @@ def display_clicked_data(clickData):
             src=f"/assets/logos/{selected.replace('.', '')}.png",
             className="party-image",
         )
-    ], [html.H3(row) for row in text.split("\n")]
+    ], [html.H3(full_name), html.Hr(style={"color": "white"})] + [
+        html.H4(row) for row in text.split("\n")
+    ]

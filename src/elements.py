@@ -99,7 +99,8 @@ def get_repr_data_section() -> html.Div:
     return html.Div(
         children=[
             html.H2("Choose a representative", id="repr-name"),
-            html.P(
+            html.Hr(style={"color": "white"}),
+            html.H4(
                 "For which the data should be displayed",
                 id="repr-data",
             ),
@@ -141,7 +142,9 @@ def get_repr_vis_section() -> html.Div:
                 id="repr-other",
                 className="repr-other",
             ),
-            dcc.Graph(id="repr-funds-breakup", config={"displayModeBar": False}),
+            dcc.Graph(
+                figure={}, id="repr-funds-breakup", config={"displayModeBar": False}
+            ),
             html.Div(
                 children=[
                     get_icon_entry("Houses:", "house-array"),
@@ -273,3 +276,66 @@ def get_parties_fig():
         plot_bgcolor=PLOT_BG_COLOR,
     )
     return fig
+
+
+def get_base_sejm_data():
+    base_sejm_data = [
+        "Number of representatives: 460",
+        "Total number of received votes: 11,399,592",
+        "Average age: 52.6",
+        "Average total funds: 1,392,234.46 PLN",
+        "Average debt: 435,427.24 PLN",
+    ]
+    return html.Div(
+        children=[
+            html.H3("Sejm Rzeczypospolitej Polskiej"),
+            html.Hr(style={"color": "white"}),
+        ]
+        + [html.H3(text) for text in base_sejm_data],
+        className="party-details",
+        id="party-details",
+    )
+
+
+def get_party_side_bar():
+    return html.Div(
+        children=[
+            html.Div(
+                children=[
+                    html.Img(src="/assets/logos/sejm.png", className="party-image")
+                ],
+                className="party-image-div",
+                id="party-image-div",
+            ),
+            get_base_sejm_data(),
+        ],
+        id="party-side-bar",
+        className="side-bar",
+    )
+
+
+def get_party_plot_section():
+    return html.Div(
+        children=[
+            html.Div(
+                children=[
+                    dcc.Graph(
+                        id="party-plot",
+                        figure=get_parties_fig(),
+                        config={
+                            "displayModeBar": False,
+                            "autosizable": True,
+                            "responsive": True,
+                        },
+                    ),
+                ],
+                className="party-plot-div",
+            ),
+            get_party_side_bar(),
+        ],
+        className="party-plot-section",
+    )
+
+
+def get_party_stats_section():
+    return html.Div(className="party-stats-section")
