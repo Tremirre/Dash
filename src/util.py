@@ -2,6 +2,7 @@ import random
 import typing
 import copy
 
+import pandas as pd
 import numpy as np
 
 from string import digits, ascii_letters
@@ -98,3 +99,19 @@ def get_color_from_value(value: float) -> str:
     if value < 90:
         return "lightgreen"
     return "green"
+
+
+def get_selected_party_stats(party: str, repr_df: pd.DataFrame):
+    selector = (lambda _: True) if party == "sejm" else ["party_full", "party_short"]
+    grouped_df = repr_df.groupby(selector, as_index=False).agg(
+        {
+            "name": "count",
+            "votes_count": "sum",
+            "age": "mean",
+            "total_funds": "mean",
+            "loans_value": "mean",
+        }
+    )
+    if party != "sejm":
+        grouped_df = grouped_df.set_index("party_short").loc[[party]]
+    return next(grouped_df.itertuples())

@@ -9,6 +9,9 @@ from dash import dcc, html
 from data import REPR_DF
 
 
+PLOT_BG_COLOR = "rgb(240, 240, 240)"
+
+
 def get_nav_bar() -> html.Div:
     return html.Div(
         children=[
@@ -82,8 +85,8 @@ def get_main_sejm_plot() -> dcc.Graph:
             font=dict(family="Montserrat-Thin", size=30),
         ),
         margin=dict(l=20, b=20, r=20, t=80),
-        paper_bgcolor="rgb(240, 240, 240)",
-        plot_bgcolor="rgb(240, 240, 240)",
+        paper_bgcolor=PLOT_BG_COLOR,
+        plot_bgcolor=PLOT_BG_COLOR,
     )
     return dcc.Graph(
         id="sejm-plot",
@@ -209,8 +212,8 @@ def get_funds_fig(record):
             font=dict(family="Montserrat-Thin", size=24),
         ),
         margin=dict(l=20, b=20, r=20, t=80),
-        paper_bgcolor="rgb(240, 240, 240)",
-        plot_bgcolor="rgb(240, 240, 240)",
+        paper_bgcolor=PLOT_BG_COLOR,
+        plot_bgcolor=PLOT_BG_COLOR,
     )
     return funds_fig
 
@@ -225,8 +228,8 @@ def get_voting_participation_fig(vp_data: dict, color: str):
             text="<b>Participation in voting sessions [%]:</b>",
             font=dict(family="Montserrat-Thin", size=16),
         ),
-        paper_bgcolor="rgb(240, 240, 240)",
-        plot_bgcolor="rgb(240, 240, 240)",
+        paper_bgcolor=PLOT_BG_COLOR,
+        plot_bgcolor=PLOT_BG_COLOR,
         transition=dict(duration=1000),
     )
     return vp_fig
@@ -241,8 +244,8 @@ def get_votes_count_fig(vc_data: dict):
             text="<b>Number of votes the representative has received:</b>",
             font=dict(family="Montserrat-Thin", size=16),
         ),
-        paper_bgcolor="rgb(240, 240, 240)",
-        plot_bgcolor="rgb(240, 240, 240)",
+        paper_bgcolor=PLOT_BG_COLOR,
+        plot_bgcolor=PLOT_BG_COLOR,
         transition=dict(duration=1000),
     )
     return vc_fig
@@ -260,5 +263,13 @@ def get_parties_fig():
         values="repr_count",
         width=700,
         height=700,
+    )
+    fig.update_layout(
+        title=dict(
+            text="<b>Inner ring: Current political affiliation<br>Outer ring: List from which members started</b>",
+            font=dict(family="Montserrat-Thin", size=20),
+        ),
+        paper_bgcolor=PLOT_BG_COLOR,
+        plot_bgcolor=PLOT_BG_COLOR,
     )
     return fig

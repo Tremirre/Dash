@@ -123,3 +123,33 @@ def on_sejm_plot_clicked(repr_data):
 def update_bar_chart(dims):
     fig = elements.get_scatter_matrix(dims)
     return fig
+
+
+@app.callback(
+    Output("party-image-div", "children"),
+    Output("party-details", "children"),
+    Input("party-plot", "clickData"),
+)
+def display_clicked_data(clickData):
+    if clickData is None:
+        raise PreventUpdate()
+    point_dict = clickData["points"][0]
+    if point_dict["parent"]:
+        raise PreventUpdate()
+    selected = point_dict["id"] if "root" in point_dict else "sejm"
+    selected_data = util.get_selected_party_stats(selected, REPR_DF)
+    text = """
+    Number of representatives: {name}\n
+    Total number of received votes: {votes_count:,.0f}\n
+    Average age: {age:.1f}\n
+    Average total funds: {total_funds:,.2f}\n
+    Average debt: {loans_value:,.2f}\n
+    """.format(
+        **selected_data._asdict()
+    )
+    return [
+        html.Img(
+            src=f"/assets/logos/{selected.replace('.', '')}.png",
+            className="party-image",
+        )
+    ], [html.H3(row) for row in text.split("\n")]
