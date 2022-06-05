@@ -68,7 +68,7 @@ PAGE_4 = [
             html.H2("Authors"),
             html.Hr(style={"width": "100%"}),
             html.H3("- Bartosz Stachowiak (sbartekt@op.pl)"),
-            html.H3("- Andrzej Kajdasz (anfrzejkaj@gmail.com)"),
+            html.H3("- Andrzej Kajdasz (AnfrzejKajda@gmail.com )"),
             html.H2("Data"),
             dcc.Link(
                 title="Source Page",
