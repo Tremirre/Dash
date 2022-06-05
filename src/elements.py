@@ -506,6 +506,9 @@ def get_hidden_panel_content():
                 fixed_rows={"headers": True},
                 virtualization=True,
                 style_as_list_view=True,
+                filter_action="native",
+                sort_action="native",
+                sort_mode="single",
                 style_cell={
                     "overflowX": "hidden",
                     "textOverflow": "ellipsis",

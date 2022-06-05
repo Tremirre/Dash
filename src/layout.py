@@ -21,28 +21,40 @@ PAGE_3 = [
     html.Br(),
     html.Br(),
     html.Br(),
-    html.Div(children=[
-        html.H1("Select feature to analyse"),
-        dcc.Dropdown(
-            id="dropdown-2",
-            options=[
-                "education",
-                "occupation",
-                "vehicles_count",
-                "cash_polish_currency",
-                "cash_foreign_currency",
-                "paper_value",
-                "loans_value",
-                'total_funds',
-                'num_houses',
-                'num_flats',
-
-            ],
-            value="education",
-            multi=False
-        ),
-        dcc.Graph(config={"displayModeBar": False, "autosizable": True, "responsive": True}, id="bar-plot"),
-        dbc.Container(id = "table"),
-    ]),
+    html.Div(
+        children=[
+            html.H1("Select feature to analyse"),
+            dcc.Dropdown(
+                id="dropdown-2",
+                options=[
+                    "education",
+                    "occupation",
+                    "vehicles_count",
+                    "cash_polish_currency",
+                    "cash_foreign_currency",
+                    "paper_value",
+                    "loans_value",
+                    "total_funds",
+                    "num_houses",
+                    "num_flats",
+                ],
+                value="education",
+                multi=False,
+            ),
+            html.Div(
+                children=[
+                    dcc.Graph(
+                        config={
+                            "displayModeBar": False,
+                            "autosizable": True,
+                            "responsive": True,
+                        },
+                        id="bar-plot",
+                    )
+                ]
+            ),
+            html.Div(children=[dbc.Container(id="table")]),
+        ]
+    ),
     html.P(id="placeholder"),
 ]
