@@ -41,6 +41,8 @@ def page_changer(*args):
         return layout.PAGE_2
     if "feature-button" in changed_id:
         return layout.PAGE_3
+    if "about-button" in changed_id:
+        return layout.PAGE_4
     return layout.PAGE_1
 
 
