@@ -50,8 +50,8 @@ def get_nav_bar() -> html.Div:
                         n_clicks=0,
                     ),
                     html.Button(
-                        "Test Button",
-                        id="test-button",
+                        "By Feature",
+                        id="feature-button",
                         className="nav-button",
                         n_clicks=0,
                     ),
@@ -406,7 +406,7 @@ def get_histogram_fig(dataframe, value: str, selected: str):
 def get_bar_char(value):
     df = REPR_DF.copy()
     df["paper_value"] = df["securites_value"] + df["other_shares_value"]
-    if (value in ["cash_polish_currency", "cash_foreign_currency", "paper_value", "loans_value"]):
+    if (value in ["cash_polish_currency", "cash_foreign_currency", "paper_value", "loans_value", "total_funds"]):
         df[value].where(~((df[value] > 0) & (df[value] < 1000)), other=0, inplace=True)
         df[value].where(~((df[value] > 1000) & (df[value] < 10000)), other=1000, inplace=True)
         df[value].where(~((df[value] > 10000) & (df[value] < 100000)), other=10000, inplace=True)
@@ -414,6 +414,7 @@ def get_bar_char(value):
         df[value].where(~(df[value] > 1000000), other=1000000, inplace=True)
         df[value] = df[value].fillna(0)
         df[value] = df[value].apply(str)
+
     new_df = pd.DataFrame({'count': df.groupby(["party_short", value]).size()}).reset_index()
     fig = px.bar(new_df, x=new_df.party_short, y=new_df["count"], color=new_df[value],
                  title="Parties acording to " + value.replace("_", " "),
@@ -426,18 +427,43 @@ def get_table(value):
     df = REPR_DF.copy()
     df = df.fillna(0)
     df["paper_value"] = df["securites_value"] + df["other_shares_value"]
-    to_drop = ['election_date', 'list', 'district_id', 'constituency_city',
-               'votes_count', 'oath_date', 'seniority', 'city_of_birth',
-               'date_of_birth', 'education', 'finished_school', 'occupation',
-               'voting_participation', 'party_short', 'additional_info',
-               'party_function', 'academic_degree', 'sejm_function',
-               'cash_polish_currency', 'cash_foreign_currency', 'securites_value',
-               'house_size', 'house_value', 'flat_size', 'flat_value',
-               'farm_estate_size', 'farm_estate_value', 'other_estates_value',
-               'other_shares_value', 'vehicles_count', 'loans_value', 'total_funds',
-               'num_houses', 'num_flats', 'age', 'paper_value']
-    to_drop.remove(value)
-    df.drop(to_drop, axis=1, inplace=True)
+    dict_rename = {
+                "name" : "Name",
+                "party_short" : "Party name",
+                "education" : "Education",
+                "occupation" : "Occupation",
+                "vehicles_count": "Number of vehicles",
+                "cash_polish_currency" : "Cash in polish currency",
+                "cash_foreign_currency" : "Cash in foreign currency",
+                "paper_value" : "Total value in paper",
+                "loans_value" : "Total debt",
+                'total_funds' : "Total funds",
+                'num_houses' : "Number of houses",
+                'num_flats' : "Number of flats"}
+
+    df.rename(columns = dict_rename, inplace= True)
+
+    df = df[["Name", "Party name", dict_rename[value]]]
     table = dbc.Container([
-        dash_table.DataTable(df.to_dict('records'), [{"name": i, "id": i} for i in df.columns])])
+        dash_table.DataTable(
+        id = 'datatable-interactivity',
+        columns = [{"name": i, "id": i, "deletable": True, "selectable": True} for i in df.columns ],
+        data = df.to_dict('records'),
+        editable = True,
+        filter_action = "native",
+        sort_action = "native",
+        sort_mode = "multi",
+        column_selectable = "single",
+        row_selectable = "multi",
+        row_deletable = True,
+        selected_columns = [],
+        selected_rows = [],
+        page_action = "native",
+        page_current = 0,
+        page_size = 10,
+    ),
+    html.Div(id='datatable-interactivity-container')
+
+
+    ])
     return table

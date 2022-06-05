@@ -18,8 +18,10 @@ PAGE_2 = [
 PAGE_3 = [
     elements.get_nav_bar(),
     html.Br(),
+    html.Br(),
+    html.Br(),
     html.Div(children=[
-        html.H4("Analysis of parties"),
+        html.H1("Select feature to analyse"),
         dcc.Dropdown(
             id="dropdown-2",
             options=[
@@ -29,33 +31,18 @@ PAGE_3 = [
                 "cash_polish_currency",
                 "cash_foreign_currency",
                 "paper_value",
-                "loans_value"
+                "loans_value",
+                'total_funds',
+                'num_houses',
+                'num_flats',
 
             ],
             value="education",
             multi=False
         ),
-        dcc.Graph(id="bar-plot"),
+        dcc.Graph(config={"displayModeBar": False, "autosizable": True, "responsive": True}, id="bar-plot"),
         dbc.Container(id = "table"),
     ]),
-    html.Div(
-        [
-            html.H4("Analysis of hajsik data using scatter matrix"),
-            dcc.Dropdown(
-                id="dropdown",
-                options=[
-                    "cash_polish_currency",
-                    "cash_foreign_currency",
-                    "paper_value",
-                    "property_value",
-                    "vehicles_count",
-                ],
-                value=["cash_polish_currency", "cash_foreign_currency"],
-                multi=True,
-            ),
-            dcc.Graph(id="scatter_matrix"),
-        ]
-    ),
     html.P(id="placeholder"),
 ]
 

@@ -20,7 +20,7 @@ app.clientside_callback(
     }
     """,
     Output("placeholder", "children"),
-    Input("test-button", "n_clicks"),
+    Input("feature-button", "n_clicks"),
 )
 
 
@@ -29,13 +29,13 @@ app.clientside_callback(
     Input("individual-button", "n_clicks"),
     Input("party-button", "n_clicks"),
     Input("about-button", "n_clicks"),
-    Input("test-button", "n_clicks"),
+    Input("feature-button", "n_clicks"),
 )
 def page_changer(*args):
     changed_id = [p["prop_id"] for p in callback_context.triggered][0]
     if "party-button" in changed_id:
         return layout.PAGE_2
-    if "test-button" in changed_id:
+    if "feature-button" in changed_id:
         return layout.PAGE_3
     return layout.PAGE_1
 
@@ -190,3 +190,4 @@ def update_bar_chart(dims):
 @app.callback(Output('table', 'children'), Input('dropdown-2', 'value'))
 def update_graphs(value):
     return elements.get_table(value)
+
