@@ -50,8 +50,8 @@ def get_nav_bar() -> html.Div:
                         n_clicks=0,
                     ),
                     html.Button(
-                        "Test Button",
-                        id="test-button",
+                        "By Feature",
+                        id="feature-button",
                         className="nav-button",
                         n_clicks=0,
                     ),
@@ -411,6 +411,7 @@ def get_bar_char(value):
         "cash_foreign_currency",
         "paper_value",
         "loans_value",
+        "total_funds",
     ]:
         df[value].where(~((df[value] > 0) & (df[value] < 1000)), other=0, inplace=True)
         df[value].where(
@@ -425,6 +426,7 @@ def get_bar_char(value):
         df[value].where(~(df[value] > 1000000), other=1000000, inplace=True)
         df[value] = df[value].fillna(0)
         df[value] = df[value].apply(str)
+
     new_df = pd.DataFrame(
         {"count": df.groupby(["party_short", value]).size()}
     ).reset_index()
@@ -444,12 +446,47 @@ def get_table(value):
     df = REPR_DF.copy()
     df = df.fillna(0)
     df["paper_value"] = df["securites_value"] + df["other_shares_value"]
-    df = df[["name", "party_full", value]]
+    dict_rename = {
+        "name": "Name",
+        "party_short": "Party name",
+        "education": "Education",
+        "occupation": "Occupation",
+        "vehicles_count": "Number of vehicles",
+        "cash_polish_currency": "Cash in polish currency",
+        "cash_foreign_currency": "Cash in foreign currency",
+        "paper_value": "Total value in paper",
+        "loans_value": "Total debt",
+        "total_funds": "Total funds",
+        "num_houses": "Number of houses",
+        "num_flats": "Number of flats",
+    }
+
+    df.rename(columns=dict_rename, inplace=True)
+
+    df = df[["Name", "Party name", dict_rename[value]]]
     table = dbc.Container(
         [
             dash_table.DataTable(
-                df.to_dict("records"), [{"name": i, "id": i} for i in df.columns]
-            )
+                id="datatable-interactivity",
+                columns=[
+                    {"name": i, "id": i, "deletable": True, "selectable": True}
+                    for i in df.columns
+                ],
+                data=df.to_dict("records"),
+                editable=True,
+                filter_action="native",
+                sort_action="native",
+                sort_mode="multi",
+                column_selectable="single",
+                row_selectable="multi",
+                row_deletable=True,
+                selected_columns=[],
+                selected_rows=[],
+                page_action="native",
+                page_current=0,
+                page_size=10,
+            ),
+            html.Div(id="datatable-interactivity-container"),
         ]
     )
     return table
