@@ -16,11 +16,15 @@ app.config.suppress_callback_exceptions = True
 app.clientside_callback(
     """
     function(n_clicks) {
-        return;
+        if (n_clicks == 0) {
+            return;
+        }
+        show_hidden_panel();
     }
     """,
     Output("placeholder", "children"),
-    Input("test-button", "n_clicks"),
+    Input("table-panel-button", "n_clicks"),
+    prevent_initial_callback=True,
 )
 
 
@@ -54,13 +58,20 @@ def page_changer(*args):
         Output("repr-votes-plot", "figure"),
     ],
     Input("sejm-plot", "clickData"),
+    Input("repr-table", "active_cell"),
     prevent_initial_callback=True,
 )
-def on_sejm_plot_clicked(repr_data):
-    try:
-        name = repr_data["points"][0]["customdata"][0]
-    except TypeError:
-        raise PreventUpdate()
+def on_sejm_plot_clicked(repr_data, active_cell):
+    changed_id = [p["prop_id"] for p in callback_context.triggered][0]
+    if "sejm-plot" in changed_id:
+        try:
+            name = repr_data["points"][0]["customdata"][0]
+        except TypeError:
+            raise PreventUpdate()
+    else:
+        if not active_cell or active_cell["column_id"] != "Name":
+            raise PreventUpdate()
+        name = REPR_DF.loc[active_cell["row"], "name"]
     clicked_entry = next(REPR_DF.set_index("name").loc[[name]].fillna(0).itertuples())
     repr_data_format = """
     Political party: {party_full}
@@ -187,6 +198,6 @@ def update_bar_chart(dims):
     return fig
 
 
-@app.callback(Output('table', 'children'), Input('dropdown-2', 'value'))
+@app.callback(Output("table", "children"), Input("dropdown-2", "value"))
 def update_graphs(value):
     return elements.get_table(value)

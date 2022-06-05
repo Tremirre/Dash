@@ -5,6 +5,7 @@ from dash import html, dcc
 
 PAGE_1 = [
     elements.get_nav_bar(),
+    *elements.get_hidden_panel_elements(),
     elements.get_sejm_plot_section(),
     elements.get_repr_vis_section(),
 ]
@@ -18,26 +19,27 @@ PAGE_2 = [
 PAGE_3 = [
     elements.get_nav_bar(),
     html.Br(),
-    html.Div(children=[
-        html.H4("Analysis of parties"),
-        dcc.Dropdown(
-            id="dropdown-2",
-            options=[
-                "education",
-                "occupation",
-                "vehicles_count",
-                "cash_polish_currency",
-                "cash_foreign_currency",
-                "paper_value",
-                "loans_value"
-
-            ],
-            value="education",
-            multi=False
-        ),
-        dcc.Graph(id="bar-plot"),
-        dbc.Container(id = "table"),
-    ]),
+    html.Div(
+        children=[
+            html.H4("Analysis of parties"),
+            dcc.Dropdown(
+                id="dropdown-2",
+                options=[
+                    "education",
+                    "occupation",
+                    "vehicles_count",
+                    "cash_polish_currency",
+                    "cash_foreign_currency",
+                    "paper_value",
+                    "loans_value",
+                ],
+                value="education",
+                multi=False,
+            ),
+            dcc.Graph(id="bar-plot"),
+            dbc.Container(id="table"),
+        ]
+    ),
     html.Div(
         [
             html.H4("Analysis of hajsik data using scatter matrix"),
@@ -58,4 +60,3 @@ PAGE_3 = [
     ),
     html.P(id="placeholder"),
 ]
-

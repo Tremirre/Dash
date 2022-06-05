@@ -406,19 +406,37 @@ def get_histogram_fig(dataframe, value: str, selected: str):
 def get_bar_char(value):
     df = REPR_DF.copy()
     df["paper_value"] = df["securites_value"] + df["other_shares_value"]
-    if (value in ["cash_polish_currency", "cash_foreign_currency", "paper_value", "loans_value"]):
+    if value in [
+        "cash_polish_currency",
+        "cash_foreign_currency",
+        "paper_value",
+        "loans_value",
+    ]:
         df[value].where(~((df[value] > 0) & (df[value] < 1000)), other=0, inplace=True)
-        df[value].where(~((df[value] > 1000) & (df[value] < 10000)), other=1000, inplace=True)
-        df[value].where(~((df[value] > 10000) & (df[value] < 100000)), other=10000, inplace=True)
-        df[value].where(~((df[value] > 100000) & (df[value] < 1000000)), other=100000, inplace=True)
+        df[value].where(
+            ~((df[value] > 1000) & (df[value] < 10000)), other=1000, inplace=True
+        )
+        df[value].where(
+            ~((df[value] > 10000) & (df[value] < 100000)), other=10000, inplace=True
+        )
+        df[value].where(
+            ~((df[value] > 100000) & (df[value] < 1000000)), other=100000, inplace=True
+        )
         df[value].where(~(df[value] > 1000000), other=1000000, inplace=True)
         df[value] = df[value].fillna(0)
         df[value] = df[value].apply(str)
-    new_df = pd.DataFrame({'count': df.groupby(["party_short", value]).size()}).reset_index()
-    fig = px.bar(new_df, x=new_df.party_short, y=new_df["count"], color=new_df[value],
-                 title="Parties acording to " + value.replace("_", " "),
-                 labels={col: col.replace("_", " ") for col in df.columns})
-    fig.update_layout(yaxis=dict(title='Count'), xaxis=dict(title="Party"))
+    new_df = pd.DataFrame(
+        {"count": df.groupby(["party_short", value]).size()}
+    ).reset_index()
+    fig = px.bar(
+        new_df,
+        x=new_df.party_short,
+        y=new_df["count"],
+        color=new_df[value],
+        title="Parties acording to " + value.replace("_", " "),
+        labels={col: col.replace("_", " ") for col in df.columns},
+    )
+    fig.update_layout(yaxis=dict(title="Count"), xaxis=dict(title="Party"))
     return fig
 
 
@@ -426,18 +444,57 @@ def get_table(value):
     df = REPR_DF.copy()
     df = df.fillna(0)
     df["paper_value"] = df["securites_value"] + df["other_shares_value"]
-    to_drop = ['election_date', 'list', 'district_id', 'constituency_city',
-               'votes_count', 'oath_date', 'seniority', 'city_of_birth',
-               'date_of_birth', 'education', 'finished_school', 'occupation',
-               'voting_participation', 'party_short', 'additional_info',
-               'party_function', 'academic_degree', 'sejm_function',
-               'cash_polish_currency', 'cash_foreign_currency', 'securites_value',
-               'house_size', 'house_value', 'flat_size', 'flat_value',
-               'farm_estate_size', 'farm_estate_value', 'other_estates_value',
-               'other_shares_value', 'vehicles_count', 'loans_value', 'total_funds',
-               'num_houses', 'num_flats', 'age', 'paper_value']
-    to_drop.remove(value)
-    df.drop(to_drop, axis=1, inplace=True)
-    table = dbc.Container([
-        dash_table.DataTable(df.to_dict('records'), [{"name": i, "id": i} for i in df.columns])])
+    df = df[["name", "party_full", value]]
+    table = dbc.Container(
+        [
+            dash_table.DataTable(
+                df.to_dict("records"), [{"name": i, "id": i} for i in df.columns]
+            )
+        ]
+    )
     return table
+
+
+def get_hidden_panel_content():
+    displayed_df = REPR_DF[["name", "party_short"]].rename(
+        columns={"name": "Name", "party_short": "Party"}
+    )
+    return dbc.Container(
+        children=[
+            html.H2("Representatives Datatable"),
+            dash_table.DataTable(
+                displayed_df.to_dict("records"),
+                [{"name": i, "id": i} for i in ["Name", "Party"]],
+                id="repr-table",
+                fixed_rows={"headers": True},
+                virtualization=True,
+                style_as_list_view=True,
+                style_cell={
+                    "overflowX": "hidden",
+                    "textOverflow": "ellipsis",
+                    "width": "50%",
+                },
+                style_header={
+                    "backgroundColor": "darkgray",
+                    "fontWeight": "bold",
+                    "color": "white",
+                },
+                style_table={"height": 350},
+            ),
+        ],
+        fluid=True,
+        id="table-container",
+        class_name="table-container",
+    )
+
+
+def get_hidden_panel_elements():
+    return (
+        html.Button(">", id="table-panel-button", n_clicks=0),
+        html.Div(
+            children=[get_hidden_panel_content()],
+            id="hidden-panel",
+            className="hidden-panel",
+        ),
+        html.P(id="placeholder"),
+    )

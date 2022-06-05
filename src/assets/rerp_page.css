@@ -38,3 +38,53 @@
     background-clip: border-box;
     font-size: 16px;
 }
+
+#table-panel-button {
+    display: inline-block;
+    vertical-align: middle;
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 100px;
+    width: 20px;
+    z-index: 100;
+    font-family: "Montserrat-SemiBold";
+    font-size: 0.8em;
+    border: none;
+    background-color: black;
+    color: white;
+    transition: all 0.3s ease-in-out;
+}
+
+#table-panel-button:hover {
+    width: 50px;
+}
+
+.hidden-panel {
+    display: inline-block;
+    vertical-align: middle;
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 500px;
+    width: 0px;
+    z-index: 99;
+    background-color: lightgray;
+    transition: all 0.3s ease-in-out;
+    border-radius: 10px;
+}
+
+.table-container {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.table-container>H2 {
+    padding-top: 10px;
+    padding-left: 20px;
+}
+
+#repr-table {
+    padding: 20px;
+}
