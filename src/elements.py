@@ -520,6 +520,8 @@ def get_hidden_panel_content():
                     "color": "white",
                 },
                 style_table={"height": 350},
+                selected_columns=[],
+                selected_rows=[],
             ),
         ],
         fluid=True,

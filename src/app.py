@@ -59,9 +59,10 @@ def page_changer(*args):
     ],
     Input("sejm-plot", "clickData"),
     Input("repr-table", "active_cell"),
+    Input("repr-table", "derived_virtual_data"),
     prevent_initial_callback=True,
 )
-def on_sejm_plot_clicked(repr_data, active_cell):
+def on_sejm_plot_clicked(repr_data, active_cell, v_data):
     changed_id = [p["prop_id"] for p in callback_context.triggered][0]
     if "sejm-plot" in changed_id:
         try:
@@ -71,7 +72,7 @@ def on_sejm_plot_clicked(repr_data, active_cell):
     else:
         if not active_cell or active_cell["column_id"] != "Name":
             raise PreventUpdate()
-        name = REPR_DF.loc[active_cell["row"], "name"]
+        name = v_data[active_cell["row"]]["Name"]
     clicked_entry = next(REPR_DF.set_index("name").loc[[name]].fillna(0).itertuples())
     repr_data_format = """
     Political party: {party_full}
