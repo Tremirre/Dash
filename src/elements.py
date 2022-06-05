@@ -6,7 +6,7 @@ import util
 
 from dash import dcc, html, dash_table
 
-from data import REPR_DF
+from data import REPR_DF, PARTIES_COLOR_SCHEME, ASSETS_COLOR_SCHEME
 
 
 PLOT_BG_COLOR = "rgb(240, 240, 240)"
@@ -83,6 +83,7 @@ def get_main_sejm_plot() -> dcc.Graph:
         y="seat_y",
         color="party_short",
         custom_data=["name", "sejm_function", "academic_degree"],
+        color_discrete_map=PARTIES_COLOR_SCHEME,
         labels={"party_short": "Political Party"},
         width=900,
         height=450,
@@ -153,15 +154,23 @@ def get_repr_vis_section() -> html.Div:
             html.Div(
                 children=[
                     dcc.Graph(
-                        id="repr-participation-plot", config={"displayModeBar": False}
+                        figure=get_placeholder_fig(200),
+                        id="repr-participation-plot",
+                        config={"displayModeBar": False},
                     ),
-                    dcc.Graph(id="repr-votes-plot", config={"displayModeBar": False}),
+                    dcc.Graph(
+                        figure=get_placeholder_fig(200),
+                        id="repr-votes-plot",
+                        config={"displayModeBar": False},
+                    ),
                 ],
                 id="repr-other",
                 className="repr-other",
             ),
             dcc.Graph(
-                figure={}, id="repr-funds-breakup", config={"displayModeBar": False}
+                figure=get_placeholder_fig(),
+                id="repr-funds-breakup",
+                config={"displayModeBar": False},
             ),
             html.Div(
                 children=[
@@ -176,6 +185,29 @@ def get_repr_vis_section() -> html.Div:
         ],
         className="repr-vis section",
     )
+
+
+def get_placeholder_fig(specified_height: int = None) -> dict:
+    fig = {
+        "layout": {
+            "xaxis": {"visible": False},
+            "yaxis": {"visible": False},
+            "annotations": [
+                {
+                    "text": "Select data for which to show visualization",
+                    "xref": "paper",
+                    "yref": "paper",
+                    "showarrow": False,
+                    "font": {"size": 28, "family": "Montserrat-Thin"},
+                }
+            ],
+            "paper_bgcolor": PLOT_BG_COLOR,
+            "plot_bgcolor": PLOT_BG_COLOR,
+        }
+    }
+    if specified_height:
+        fig["layout"]["height"] = specified_height
+    return fig
 
 
 def get_scatter_matrix(dims):
@@ -221,7 +253,13 @@ def get_icons_array(count: int, randomize_id: bool, icon_name: str, **kwargs):
 def get_funds_fig(record):
     funds_breakup = util.get_repr_funds_breakup(record)
     funds_fig = px.pie(
-        funds_breakup, values="Value", names="Asset", height=400, hole=0.4
+        funds_breakup,
+        values="Value",
+        names="Asset",
+        color="Asset",
+        height=400,
+        hole=0.4,
+        color_discrete_map=ASSETS_COLOR_SCHEME,
     )
     funds_fig.update_traces(
         hovertemplate="Value: <b>%{value}PLN</b><br>Asset type: <b>%{label}</b>"
@@ -282,6 +320,8 @@ def get_parties_fig():
         party_count_df,
         path=["party_short", "list"],
         values="repr_count",
+        color="party_short",
+        color_discrete_map=PARTIES_COLOR_SCHEME,
         width=700,
         height=700,
     )
@@ -360,6 +400,7 @@ def get_party_stats_section():
         children=[
             html.Div(
                 children=dcc.Graph(
+                    figure=get_placeholder_fig(),
                     id="party-histogram",
                     config={
                         "displayModeBar": False,
@@ -377,6 +418,7 @@ def get_party_stats_section():
                             dcc.Dropdown(
                                 options=list(HIST_DROPDOWN_TRANSLATION.keys()),
                                 id="party-stats-dropdown",
+                                className="dropdown",
                             )
                         ]
                     ),
@@ -390,7 +432,10 @@ def get_party_stats_section():
 
 def get_histogram_fig(dataframe, value: str, selected: str):
     fig = px.histogram(
-        dataframe, x=HIST_DROPDOWN_TRANSLATION[value], color="party_short"
+        dataframe,
+        x=HIST_DROPDOWN_TRANSLATION[value],
+        color="party_short",
+        color_discrete_map=PARTIES_COLOR_SCHEME,
     )
     fig.update_layout(
         title=dict(
@@ -468,20 +513,11 @@ def get_table(value):
         [
             dash_table.DataTable(
                 id="datatable-interactivity",
-                columns=[
-                    {"name": i, "id": i, "deletable": True, "selectable": True}
-                    for i in df.columns
-                ],
+                columns=[{"name": i, "id": i} for i in df.columns],
                 data=df.to_dict("records"),
-                editable=True,
                 filter_action="native",
                 sort_action="native",
                 sort_mode="multi",
-                column_selectable="single",
-                row_selectable="multi",
-                row_deletable=True,
-                selected_columns=[],
-                selected_rows=[],
                 page_action="native",
                 page_current=0,
                 page_size=10,

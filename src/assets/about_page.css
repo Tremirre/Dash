@@ -1,0 +1,6 @@
+.about-page-div {
+    display: grid;
+    background-color: black;
+    color: white;
+    padding: 80px;
+}
