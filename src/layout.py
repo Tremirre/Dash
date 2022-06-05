@@ -65,6 +65,10 @@ PAGE_4 = [
     html.Div(
         children=[
             html.H1("About"),
+            html.H2("Authors"),
+            html.Hr(style={"width": "100%"}),
+            html.H3("- Bartosz Stachowiak (sbartekt@op.pl)"),
+            html.H3("- Andrzej Kajdasz (anfrzejkaj@gmail.com)"),
             html.H2("Data"),
             dcc.Link(
                 title="Source Page",
@@ -88,6 +92,9 @@ PAGE_4 = [
                 "representatives in form of a filterable table. Selecting a representative from a table will display his data in the same way as "
                 "it would by selecting him from the sejm plot."
             ),
+            html.H3(
+                "Note: 'Experience' and 'Seniority' are expressed as number of past candencies of the representative"
+            ),
             html.H2("By Party"),
             html.Hr(style={"width": "100%"}),
             html.H3(
@@ -104,7 +111,6 @@ PAGE_4 = [
                 "that represents MPs together with the selected attribute. You can filter and search for data in the "
                 "selected column."
             ),
-            html.H3(),
         ],
         className="about-page-div",
     ),
